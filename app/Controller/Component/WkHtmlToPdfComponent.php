@@ -8,6 +8,7 @@ class WkHtmlToPdfComponent extends Object
 
 /**
  * wkhtmltopdf component class for exporting a view as pdf
+ * http://bakery.cakephp.org/articles/jwswart/2010/04/09/wkhtmltopdf-component
  * 
  * @author Justin Swart
  *
