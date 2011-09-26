@@ -5,8 +5,7 @@
  */
 class SubmissionsController extends AppController {
 
-	public $components = array('WkHtmlToPdf'); 
-
+	public $components = array('WkHtmlToPdf');
 
 /**
  * index method
@@ -31,12 +30,16 @@ class SubmissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		$this->Submission->id = $id;
-		if (!$this->Submission->exists()) {
-			throw new NotFoundException(__('Invalid submission'));
-		}
-		$this->set('submission', $this->Submission->read(null, $id));
+	public function view($UserID, $FormID) {
+		
+		$SubmissionResults = $this->Submission->Result->find('all', array(
+				'Submission.form_id' => $FormID,
+				'Submission.user_id' => $UserID
+			)
+		);
+		
+		// var_dump($SubmissionResults);
+		$this->set( 'SubmissionResults', $SubmissionResults );
 	}
 
 /**
