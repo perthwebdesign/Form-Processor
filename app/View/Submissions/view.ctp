@@ -1,5 +1,15 @@
 <div class="submissions view">
 <h2><?php  echo __('Submission');?></h2>
+
+	<dl>
+	<?php foreach ($SubmissionResults as $SubmissionResult): ?>
+		<dt><?php echo $SubmissionResult['Result']['key'] ?></dt>
+		<dd><?php echo $SubmissionResult['Result']['value'] ?></dd>
+	<?php endforeach; ?>
+	</dl>
+
+	<?php return ?>
+
 	<dl>
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
