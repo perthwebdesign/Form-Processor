@@ -5,6 +5,8 @@
  */
 class SubmissionsController extends AppController {
 
+	public $components = array('WkHtmlToPdf'); 
+
 
 /**
  * index method
@@ -14,7 +16,14 @@ class SubmissionsController extends AppController {
 	public function index() {
 		$this->Submission->recursive = 0;
 		$this->set('submissions', $this->paginate());
+		//$this->WkHtmlToPdf->createPdf();
 	}
+	
+	public function getViewDump($fileName)
+    {
+        $this->WkHtmlToPdf->getViewDump($fileName);
+    } 
+	
 
 /**
  * view method
@@ -81,7 +90,7 @@ class SubmissionsController extends AppController {
 		$users = $this->Submission->User->find('list');
 		$forms = $this->Submission->Form->find('list');
 		$this->set(compact('User', 'users', 'Form', 'forms'));
-		
+		// $this->WkHtmlToPdf->createPdf();
 		
 	}
 
