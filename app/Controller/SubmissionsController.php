@@ -5,7 +5,8 @@
  */
 class SubmissionsController extends AppController {
 
-	public $components = array('WkHtmlToPdf');
+	// public $components = array('WkHtmlToPdf');
+	var $helpers = array('Form', 'Html', 'Text');
 
 /**
  * index method
@@ -41,49 +42,46 @@ class SubmissionsController extends AppController {
 		// var_dump($SubmissionResults);
 		$this->set( 'SubmissionResults', $SubmissionResults );
 	}
+	
+	public function pdf( $UserID, $FormID ) {
+		
+		
+		$this->view( $UserID, $FormID );
+		
+		$this->layout = 'application_form';
+		$this->render( 'view' );
+		
+	}
 
 /**
  * add method
  *
  * @return void
  */
-	public function add( $FormID = null, $UserID = null, $SubmissionID = null ) {
+	public function add( $FormID ) {
 		
-		
-		if ( is_null( $FormID ) && is_null( $UserID ) ) {
-			
-			
-			$this->redirect( array( 'controller' => 'users', 'action' => 'add' ) );
-		}
-		
-		
-		//.. Get user
-		$User = $this->Submission->User->findById($UserID);
-		$this->set( 'UserID', $User['User']['id'] );
-		
-		$Form = $this->Submission->Form->findById($FormID);
-		$this->set( 'FormID', $Form['Form']['id'] );
-		
-		
-		if ( is_null( $SubmissionID ) ) {
+		if ($this->request->is('post') && $this->Cookie->read( 'User' )) {
 			
 			$Submission = array(
-				'Submission' => array(
-					'form_id' => $FormID,
-					'user_id' => $UserID,
-				)
+				'form_id' => $FormID,
+				'user_id' => $this->Cookie->read( 'User.id' )
 			);
 			
-			//.. Save the submission record
-			$this->Submission->save($Submission);
+			$this->request->data['Submission'] = $Submission;
 			
-			$this->set( 'SubmissionID', $this->Submission->getLastInsertID());
-		}
-		
-		
-		if ($this->request->is('post')) {
+			// var_dump($this->request->data);
+			// die("test");
+			
 			$this->Submission->create();
 			if ($this->Submission->save($this->request->data)) {
+				
+				
+				
+				
+				$this->request->data['Result']['submission_id'] = $this->Submission->getLastInsertID(); 
+				
+				$this->Submission->Result->save($this->request->data['Result']);
+				
 				$this->Session->setFlash(__('The submission has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -93,8 +91,8 @@ class SubmissionsController extends AppController {
 		$users = $this->Submission->User->find('list');
 		$forms = $this->Submission->Form->find('list');
 		$this->set(compact('User', 'users', 'Form', 'forms'));
-		// $this->WkHtmlToPdf->createPdf();
 		
+		$this->layout = 'application_form';
 	}
 
 /**

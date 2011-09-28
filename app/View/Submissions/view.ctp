@@ -3,8 +3,8 @@
 
 	<dl>
 	<?php foreach ($SubmissionResults as $SubmissionResult): ?>
-		<dt><?php echo $SubmissionResult['Result']['key'] ?></dt>
-		<dd><?php echo $SubmissionResult['Result']['value'] ?></dd>
+		<dt><?php echo $this->Text->humanize($SubmissionResult['Result']['key']) ?></dt>
+		<dd><?php echo $this->Text->humanize($SubmissionResult['Result']['value']) ?></dd>
 	<?php endforeach; ?>
 	</dl>
 

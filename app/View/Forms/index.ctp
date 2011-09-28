@@ -19,6 +19,7 @@
 		<td><?php echo h($form['Form']['created']); ?>&nbsp;</td>
 		<td><?php echo h($form['Form']['updated']); ?>&nbsp;</td>
 		<td class="actions">
+			<?php echo $this->Html->link( 'New Submission', array( 'controller' => 'submissions', 'action' => 'add/'.$form['Form']['id'] ) ) ?>
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $form['Form']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $form['Form']['id'])); ?>
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $form['Form']['id']), null, __('Are you sure you want to delete # %s?', $form['Form']['id'])); ?>

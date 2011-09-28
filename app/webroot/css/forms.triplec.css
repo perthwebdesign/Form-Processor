@@ -1,0 +1,94 @@
+/**
+ *
+ * Generic CSS for CakePHP
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       app.webroot.css
+ * @since         CakePHP(tm)
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+	body {
+		font-family: Arial;
+	}
+
+	form {}
+		form fieldset {
+			position: relative;
+			width: 530px;
+			padding: 0;
+			border: none;
+		}
+			form div {
+				border-bottom: 1px solid #ccc;	
+				padding: 0.4em;
+				overflow: auto;
+				clear: both;
+				border-collapse: collapse;
+			}
+				form div label {
+					float: left;
+					width: 200px;
+					padding: 0.4em;
+					color: #000;
+				}
+				form div input {
+					float: left;
+					width: 300px;
+					padding: 0.4em;
+					border: 1px solid #000;
+					font-size: 1.1em;
+					color: #336699;
+				}
+			div.application-form form ul {
+				list-style: none;
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+				div.application-form form ul li {
+					position: relative;
+					list-style: none !important;
+					clear: both;
+					margin: 0;
+					padding: 0;
+				}
+				div.application-form form ul input {
+					position: absolute;
+					top: 0;
+					left: 0;
+					padding: 0;
+					margin: 0;
+					width: 20px;
+				}
+				div.application-form form ul label {
+					padding-left: 30px;
+				}
+			div.application-form form ol {
+			}
+				div.application-form form ol li {
+					font-size: 1.1em;
+				}
+		
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: normal;
+	}
+	h3 {
+		color: #fff !important;
+		background: #1f497c;
+		text-shadow: none;
+		text-transform: uppercase !important;
+		padding: 0.4em;
+		font-size: 1.8em !important;
+	}
+
+	div.details {
+		border: 1px solid #000;
+	}
+

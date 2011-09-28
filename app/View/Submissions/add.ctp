@@ -5,8 +5,10 @@
 		<?php //echo $this->Form['Form']['name'] ?>
 	</p>
 	
-<?php //echo $this->Form->create('Submission', array( 'action' => "/add/$this->FormID/$UserID/$SubmissionID" ) ); ?>
-<?php echo $this->Form->create('Results', array( 'action' => "/add/$SubmissionID" ) ); ?>
+<?php echo $this->Form->create('Submission'); ?>
+<?php //echo $this->Form->create('Results', array( 'action' => "/add/$SubmissionID" ) ); ?>
+	<h3>Client Application Form</h3>
+	
 	<fieldset>
 		<legend><?php echo __('Add Submission'); ?></legend>
 	
@@ -21,8 +23,7 @@
 	</fieldset>
 	
 	
-	<h3>Client Application Form</h3>
-		<div>
+		<div class="details">
 				
 			<fieldset>
 				<h5>Required</h5>
@@ -45,7 +46,7 @@
 		
 		<h3>1. Type of Applicant</h3>
 		<div>
-			<?php echo $this->Form->input( "Applicant_Type", array( "Individual", "Joint", "Superannuation Fund", "Company", "Trust", "Other" ) ) ?>
+			<?php echo $this->Form->radio( "Result.Applicant_Type", array( "Individual", "Joint", "Superannuation Fund", "Company", "Trust", "Other" ) ) ?>
 		</div>
 			
 		<h3>2. Account Name / Designation</h3>
@@ -82,7 +83,7 @@
 				I am required to have an ABN?
 				<?php
 					echo $this->Form->input(
-						"Results.abn", array(
+						"Result.abn", array(
 							'type' => 'radio',
 							'options' => array( "Yes", "No" )
 						)
@@ -117,7 +118,7 @@
 				I am required to have an ABN?
 				<?php
 					echo $this->Form->input(
-						"Results.abn", array(
+						"Result.abn", array(
 							'type' => 'radio',
 							'options' => array( "Yes", "No" )
 						)
@@ -152,7 +153,7 @@
 				I am required to have an ABN?
 				<?php
 					echo $this->Form->input(
-						"Results.abn", array(
+						"Result.abn", array(
 							'type' => 'radio',
 							'options' => array( "Yes", "No" )
 						)
@@ -182,7 +183,7 @@
 				Company Type
 				<?php
 					echo $this->Form->input(
-						'Results.company_type', array(
+						'Result.company_type', array(
 							'type' => 'radio',
 							'options' => array( "Public", "Proprietary" )
 						)
@@ -216,7 +217,7 @@
 				
 				<?php
 					echo $this->Form->input(
-						'type_of_trust', array(
+						'Result.type_of_trust', array(
 							'type' => 'radio',
 							'options' => array(
 								"Registered managed investment scheme",
@@ -242,7 +243,7 @@
 				
 				Is the trust an Australian resident for tax purposes?
 				<?php 
-					echo $this->Form->radio( "Results.australian_resident", array( "Yes", "No" ) )
+					echo $this->Form->radio( "Result.australian_resident", array( "Yes", "No" ) )
 				?>
 				<?php echo $this->Form->input("Result.If no, please specify country of tax residence", array( 'type' => 'text' ) ) ?>
 				
@@ -268,7 +269,7 @@
 				Until you notify us in writing that the authority has been revoked, each of the following persons is authorised to act on your behalf, including giving dealing and other instructions, information and requests and/or receive account information. If more than one person is nominated, we may act on the instructions of any of them unless otherwise advised.
 			</p>
 			
-			<?php echo $this->Form->radio( "Results.grant_authority", array( "Yes", "No" ) ) ?>
+			<?php echo $this->Form->radio( "Result.grant_authority", array( "Yes", "No" ) ) ?>
 			
 			<fieldset>
 				<legend>A. Authorised Agent #1</legend>
@@ -327,13 +328,13 @@
 		
 		<h3>6. Australian Tax File Number or Exemption</h3>
 		<div>
-			<?php echo $this->Form->input("Result.Individual Client # 1 TFN", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Individual Client # 2 TFN", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Individual Client # 3 TFN", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.individual_client_1_tfn", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.individual_client_2_tfn", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.individual_client_3_tfn", array( 'type' => 'text' ) ) ?>
 			
-			<?php echo $this->Form->input("Result.Company TFN", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Trust TFN", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Superannuation Fund TFN", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.company_tfn", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.trust_tfn", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->input("Result.superannuation_fund_tfn", array( 'type' => 'text' ) ) ?>
 			
 			<p>Quotation of your Australian tax file number(s) (TFN) is optional.</p>
 			<p>Penson is an Australian financial service licensee that is authorised by law to request your TFN. You are not required to provide your TFN and failing to provide your TFN to Penson is not an offence. If Penson is unable to quote your tax file number or exemption to registries, it may be obliged to take tax at the highest marginal rate from any dividends, distributions, interest and payments to which you are entitled. Accordingly, failing to provide your TFN or not permitting Penson to quote it in relation to an investment may have taxation consequences. You may wish to seek independent advice in this regard.</p>
@@ -364,7 +365,7 @@
 		<h3>8. Status</h3>
 		<div>
 			<p>Are any of the Applicants, Directors, Responsible Officials, Partners, Authorised Representatives or Beneficiaries of this Account: affiliated with any other Participant of ASX Group; a government official; or having dealings with a government official of any country?</p>
-			<?php echo $this->Form->radio( "Results.asx_participant_or_official". array( "Yes", "No" ) ) ?>
+			<?php echo $this->Form->radio( "Result.asx_participant_or_official", array( "Yes", "No" ) ) ?>
 			<?php echo $this->Form->input("Result.asx_participant_or_official_details", array( 'type' => 'text' ) ) ?>
 		</div>
 		
@@ -380,7 +381,7 @@
 				<li>(if applicable) another person or organisation (as your agent) to whom you have authorised Penson to send electronic confirmations, at the e‐mail address provided in the Application Form.</li>
 			</ol>
 			
-			<?php echo $this->Form->radio( "Results.copies_of_confirmation_notes", array( "Yes", "No" ) ) ?>
+			<?php echo $this->Form->radio( "Result.copies_of_confirmation_notes", array( "Yes", "No" ) ) ?>
 			<p>Penson cannot send your trade confirmations to a third party; however the third party can be provided with a copy of your trade confirmation. If additional copies are required please provide email or fax details:</p>
 			
 			<?php echo $this->Form->input("Result.additional_email_fax1", array( 'type' => 'text' ) ) ?>
@@ -389,7 +390,7 @@
 			
 			
 			<?php echo $this->Form->input(
-				"Results.alternate_communication", array(
+				"Result.alternate_communication", array(
 					'type' => 'radio',
 					'options' => array( 'Fax', 'Post' )
 				)
@@ -521,7 +522,7 @@
 		<div>
 			<?php
 				echo $this->Form->input(
-					"chess_and_penson_athorise", array(
+					"Result.chess_and_penson_athorise", array(
 						'label' => "I / we will be CHESS Sponsored by Penson and I/we authorised CHESS and Penson to severally advise the relevant Issuer or its nominee to pay by direct credit to the Nominated Bank Account(s) (as specified in Section 11 of this Application Form) all cash dividends, distributions, interest or income payable referable to my/our HIN",
 						'options'  => array( "Yes", "No" )
 					)
