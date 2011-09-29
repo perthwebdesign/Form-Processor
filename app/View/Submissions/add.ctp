@@ -9,44 +9,42 @@
 <?php //echo $this->Form->create('Results', array( 'action' => "/add/$SubmissionID" ) ); ?>
 	<h3>Client Application Form</h3>
 	
-	<fieldset>
-		<legend><?php echo __('Add Submission'); ?></legend>
+	<fieldset class="account-details">
+		<ul>
+			<li><?php echo $this->Form->input( "Result.Account_Number", array( 'type' => 'text' ) ) ?></li>
+			<li><?php echo $this->Form->input( "Result.Equities_Advisor_Code", array( 'type' => 'text' ) ) ?></li>
+			<li><?php echo $this->Form->input( "Result.Options_Advisor", array( 'type' => 'text' ) ) ?></li>
+		</ul>
 	
-		<?php echo $this->Form->input( "Result.Account_Number", array( 'type' => 'text' ) ) ?>
-		<?php echo $this->Form->input( "Result.Equities_Advisor_Code", array( 'type' => 'text' ) ) ?>
-		<?php echo $this->Form->input( "Result.Options_Advisor", array( 'type' => 'text' ) ) ?>
-	
-		<?php echo $this->Form->input( "Result.HIN", array( 'type' => 'text' ) ) ?>
-		<?php echo $this->Form->input( "Result.Equities_Brokerage", array( 'type' => 'text' ) ) ?>
-		<?php echo $this->Form->input( "Result.Options_Brokerage", array( 'type' => 'text' ) ) ?>
-	
+		<ul>
+			<li><?php echo $this->Form->input( "Result.HIN", array( 'type' => 'text' ) ) ?></li>
+			<li><?php echo $this->Form->input( "Result.Equities_Brokerage", array( 'type' => 'text' ) ) ?></li>
+			<li><?php echo $this->Form->input( "Result.Options_Brokerage", array( 'type' => 'text' ) ) ?></li>
+		</ul>
 	</fieldset>
 	
 	
 		<div class="details">
-				
-			<fieldset>
-				<h5>Required</h5>
-				PART A: Client Application Form, Acknowledgments and Execution
-				<h5>Optional</h5>
-				PART B: Registered Holder Collateral Cover Authorisation Form ‐ Required For Options Accounts
-				PART C: Broker to Broker Transfer Authority Form
-				PART D: Broker to Broker Transfer Authority Form ‐ Options
-				<h5>For Client to Keep for Their Records</h5>
-				PART E: Penson Terms and Conditions
-				PART F: Penson’s Explanation of CHESS Sponsorship Agreement & Penson Sponsorship Agreement
-				PART G: Penson’s Direct Debit Request and Service Agreement
-				PART H: Penson Product Disclosure Statement (PDS) for Exchange Traded Options
-				PART I: Penson Derivatives Client Agreement
-				PART J: Privacy Statements
-				PART K: Penson Financial Services Guide (FSG)
-				Please read this entire document carefully before completing this application form.
-			</fieldset>
+			<h5>Required</h5>
+			PART A: Client Application Form, Acknowledgments and Execution
+			<h5>Optional</h5>
+			PART B: Registered Holder Collateral Cover Authorisation Form ‐ Required For Options Accounts
+			PART C: Broker to Broker Transfer Authority Form
+			PART D: Broker to Broker Transfer Authority Form ‐ Options
+			<h5>For Client to Keep for Their Records</h5>
+			PART E: Penson Terms and Conditions
+			PART F: Penson’s Explanation of CHESS Sponsorship Agreement & Penson Sponsorship Agreement
+			PART G: Penson’s Direct Debit Request and Service Agreement
+			PART H: Penson Product Disclosure Statement (PDS) for Exchange Traded Options
+			PART I: Penson Derivatives Client Agreement
+			PART J: Privacy Statements
+			PART K: Penson Financial Services Guide (FSG)
+			Please read this entire document carefully before completing this application form.
 		</div>
 		
 		<h3>1. Type of Applicant</h3>
 		<div>
-			<?php echo $this->Form->radio( "Result.Applicant_Type", array( "Individual", "Joint", "Superannuation Fund", "Company", "Trust", "Other" ) ) ?>
+			<?php echo $this->Form->select( "Result.Applicant_Type", array( "Individual", "Joint", "Superannuation Fund", "Company", "Trust", "Other" ) ) ?>
 		</div>
 			
 		<h3>2. Account Name / Designation</h3>
@@ -57,10 +55,10 @@
 	
 		<h3>3. Account Details</h3>
 		<div>
-			<fieldset>
+			<fieldset class="client-details">
 				<legend>A. Individual Client #1</legend>
 				<p>Your name must match your ID exactly. Date of Birth required as part of the AML Identification Requirements</p>
-				<?php echo $this->Form->input("Result.title", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.title", array( 'type' => 'text', 'class' => 'small' ) ) ?>
 				<?php echo $this->Form->input("Result.given_names", array( 'type' => 'text' ) ) ?>
 				<?php echo $this->Form->input("Result.surname", array( 'type' => 'text' ) ) ?>
 				
