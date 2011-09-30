@@ -24,13 +24,16 @@
 		margin: 0;
 		padding: 0;
 	}
+	ol { list-style:lower-alpha }
+		ol ol { list-style: lower-roman; }
 
 	form {}
 		form fieldset {
 			position: relative;
 			padding: 0;
-			margin: 0;
+			margin: 20px 0;
 			border: none;
+			clear: both;
 		}
 			form div {
 				padding: 0;
@@ -89,10 +92,51 @@
 					font-size: 1.1em;
 				}
 			
+		div.submissions {
+			width: 960px;
+			margin: auto;
+		}
+			div.submissions #header {
+				font-size: 12px;
+				height: 120px;
+			}
+				div.submissions #header img {
+					float: left;
+				}
+				div.submissions #header div.details {
+					float: right;
+					width: 480px;
+					border: none;
+					padding: 0;
+				}
+					div.submissions #header div.details p {
+						margin: 5px 0;
+					}
+				div.submissions #header address {
+					font-style: normal;
+				}
+			
 			div.submissions form#SubmissionAddForm {
-				width: 960px;
-				margin: auto;
 			}	
+			
+			
+			form#SubmissionAddForm fieldset.section {
+				
+			}
+				form#SubmissionAddForm fieldset.section > legend {
+					width: 100%;
+					color: #fff !important;
+					background: #1f497c;
+					text-transform: uppercase !important;
+					padding: 0.4em;
+					margin: 0.4em 0;
+					font-size: 1.8em !important;
+				}
+			
+			form#SubmissionAddForm div fieldset div.radio input {
+				width: 30px !important;
+			}
+			
 				div.submissions form#SubmissionAddForm fieldset.account-details {
 				}
 					div.submissions form#SubmissionAddForm fieldset.account-details ul {
@@ -120,8 +164,88 @@
 							width: 238px;
 							border: 1px solid #ccc;
 						}
+						
+				div.submissions form#SubmissionAddForm fieldset.individual-client,
+				div.submissions form#SubmissionAddForm fieldset.agent-details {
+					float: left;
+					clear: none;
+					width: 480px;
+					margin: 15px 0;
+				}
+					div.submissions form#SubmissionAddForm fieldset.individual-client legend,
+					div.submissions form#SubmissionAddForm fieldset.agent-details legend {
+						font-weight: bold;
+					}
+					div.submissions form#SubmissionAddForm fieldset.individual-client p {
+						margin: 8px 0;
+						font-size: 12px;
+					}
+					
+					div.submissions form#SubmissionAddForm fieldset.individual-client fieldset,
+					div.submissions form#SubmissionAddForm fieldset.agent-details fieldset {
+						width: 428px;
+						padding: 10px;
+						border: 1px solid #000;
+					}
+						div.submissions form#SubmissionAddForm fieldset.individual-client fieldset fieldset {
+							padding: 0;
+							margin: 0;
+							border: none;
+						}
+					
+					div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div {
+					}
+						div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div label,
+						div.submissions form#SubmissionAddForm fieldset.agent-details div.input label {
+							width: 180px;
+							float: left;
+						}
+						div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div input,
+						div.submissions form#SubmissionAddForm fieldset.agent-details div.input input {
+							width: 230px;
+							float: left;
+						}
+						
+			form#SubmissionAddForm fieldset#individuals-signiture {
+			}
+				form#SubmissionAddForm fieldset#individuals-signiture input {
+					width: 960px;
+					height: 40px;
+					line-height: 40px;
+				}
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset {
+					clear: both;
+				}
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset div {
+					width: 320px;
+					float: left;
+					clear: none;
+				}
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset div label,
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset div input {
+					display: block;
+					float: none;
+					width: 300px;
+				}
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset div label {
+					font-size: 14px;
+				}
+				form#SubmissionAddForm fieldset#individuals-signiture fieldset div input {
+					height: 40px;
+					line-height: 40px;
+				}
+				
+			form#SubmissionAddForm div.submit input {
+				width: auto !important;
+				padding: 10px;
+			}
+						
+ 				
+				
 		
 	h1, h2, h3, h4, h5, h6 {
+		padding: 0;
+		margin: 0;
 		font-weight: normal;
 	}
 	h3 {
@@ -130,10 +254,45 @@
 		text-shadow: none;
 		text-transform: uppercase !important;
 		padding: 0.4em;
+		margin: 0.4em 0;
 		font-size: 1.8em !important;
 	}
 
 	div.details {
+		font-size: 14px;
+		padding: 10px;
 		border: 1px solid #000;
 	}
+		div.details h6 {
+			margin-bottom: 10px;
+			clear: both;
+			font-size: 14px;
+			font-style: italic;
+			text-decoration: underline;
+		}
+		div.details dl {
+			float: left;
+			width: 100%;
+			margin: 0 0 20px 0;
+			padding: 0;
+		}
+			div.details dt {
+				font-weight: bold;
+				float: left;
+				clear: left;
+				width: 150px;
+			}
+			div.details dd {
+				float: left;
+			}
+		div.details p {
+			clear: both;
+		}
+
+
+
+
+
+
+
 
