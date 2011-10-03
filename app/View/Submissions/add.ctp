@@ -14,7 +14,6 @@
 	</div>
 	
 <?php echo $this->Form->create('Submission'); ?>
-<?php //echo $this->Form->create('Results', array( 'action' => "/add/$SubmissionID" ) ); ?>
 	<h3>Client Application Form</h3>
 	
 		<fieldset class="account-details">
@@ -30,7 +29,6 @@
 				<li><?php echo $this->Form->input( "Result.Options_Brokerage", array( 'type' => 'text' ) ) ?></li>
 			</ul>
 		</fieldset>
-	
 	
 		<div class="details">
 			<h6>Required</h6>
@@ -58,19 +56,19 @@
 			<p>Please read this entire document carefully before completing this application form.</p>
 		</div>
 		
-		<h3>1. Type of Applicant</h3>
-		<div>
+		<fieldset class="section">
+			<legend>1. Type of Applicant</legend>
 			<?php
 				echo $this->Form->radio( "Result.Applicant_Type",
 					array( "Individual", "Joint", "Superannuation Fund", "Company", "Trust", "Other" )
 				)
 			?>
-		</div>
-			
-		<h3>2. Account Name / Designation</h3>
-		<div>
+		</fieldset>
+		
+		<fieldset class="section">
+			<legend>2. Account Name / Designation</legend>
 			<?php echo $this->Form->input("Result.account_name_designation", array( 'type' => 'text' ) ) ?>
-		</div>
+		</fieldset>
 	
 	
 		<div>
@@ -80,36 +78,117 @@
 				<p>Your name must match your ID exactly. Date of Birth required as part of the AML Identification Requirements</p>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.title", array( 'type' => 'text', 'class' => 'small' ) ) ?>
-					<?php echo $this->Form->input("Result.given_names", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.surname", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.residential_address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.state", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.postal_address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.state", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.email_address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.tel_home", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.tel_work", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.mobile", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.fax", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.date_of_birth", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.occupation", array( 'type' => 'text' ) ) ?>
-					
-					I am required to have an ABN?
 					<?php
-						echo $this->Form->input(
-							"Result.abn", array(
-								'type' => 'radio',
-								'options' => array( "Yes", "No" )
-							)
-						)
+						echo $this->Form->input("Result.individual_client_1_title", array(
+							'label' => 'Title',
+							'class' => 'small',
+							'type' => 'text',
+						))
 					?>
-					<?php echo $this->Form->input( "Result.ABN", array( 'type' => 'text' ) ) ?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_given_names", array(
+							'label' => 'Given Names',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_surname", array(
+							'label' => 'Surname',
+							'type' => 'text'
+						))
+					?>
+					
+					<fieldset class="residential-address">
+						<?php
+							echo $this->Form->input("Result.individual_client_1_residential_address", array(
+								'label' => 'Residential Address',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_1_state", array(
+								'label' => 'State',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_1_postcode", array(
+								'label' => 'Postcode',
+								'type' => 'text'
+							))
+						?>
+					</fieldset>
+					
+					<fieldset class="postal-address">
+						<?php
+							echo $this->Form->input("Result.individual_client_1_postal_address", array(
+								'label' => 'Postal Address',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_1_state", array(
+								'label' => 'State',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_1_postcode", array(
+								'label' => 'Postcode',
+								'type' => 'text'
+							))
+						?>
+					</fieldset>
+					
+					<?php
+						echo $this->Form->input("Result.individual_client_1_email_address", array(
+							'label' => 'Email Address',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_tel_home", array(
+							'label' => 'Tel (H)',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_tel_work", array(
+							'label' => 'Tel (W)',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_mobile", array(
+							'label' => 'Mobile',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_fax", array(
+							'label' => 'Fax',
+							'type' => 'text'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_date_of_birth", array(
+							'label' => 'Date of Birth',
+							'type' => 'date'
+						))
+					?>
+					<?php
+						echo $this->Form->input("Result.individual_client_1_occupation", array(
+							'label' => 'Occupation',
+							'type' => 'text'
+						))
+					?>
+					
+					<?php
+						echo $this->Form->input("Result.individual_client_1_abn", array(
+							'label' => 'ABN, (If Applicable)',
+							'type' => 'text'
+						))
+					?>
 				</fieldset>
 			</fieldset>
 			
@@ -117,38 +196,119 @@
 				<legend>B. Individual Client #2</legend>
 				<p>Your name must match your ID exactly. Date of Birth required as part of the AML Identification Requirements</p>
 				
-				<fieldset>
-					<?php echo $this->Form->input("Result.Title", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Given Names", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Surname", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Residential Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Postal Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Email Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (H)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (W)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Mobile", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Fax", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Date of Birth", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Occupation", array( 'type' => 'text' ) ) ?>
-					
-					I am required to have an ABN?
-					<?php
-						echo $this->Form->input(
-							"Result.abn", array(
-								'type' => 'radio',
-								'options' => array( "Yes", "No" )
-							)
-						)
-					?>
-					<?php echo $this->Form->input( "Result.ABN", array( 'type' => 'text' ) ) ?>
-				</fieldset>
+					<fieldset>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_title", array(
+								'label' => 'Title',
+								'class' => 'small',
+								'type' => 'text',
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_given_names", array(
+								'label' => 'Given Names',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_surname", array(
+								'label' => 'Surname',
+								'type' => 'text'
+							))
+						?>
+						
+						<fieldset class="residential-address">
+							<?php
+								echo $this->Form->input("Result.individual_client_2_residential_address", array(
+									'label' => 'Residential Address',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_2_state", array(
+									'label' => 'State',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_2_postcode", array(
+									'label' => 'Postcode',
+									'type' => 'text'
+								))
+							?>
+						</fieldset>
+						
+						<fieldset class="postal-address">
+							<?php
+								echo $this->Form->input("Result.individual_client_2_postal_address", array(
+									'label' => 'Postal Address',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_2_state", array(
+									'label' => 'State',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_2_postcode", array(
+									'label' => 'Postcode',
+									'type' => 'text'
+								))
+							?>
+						</fieldset>
+						
+						<?php
+							echo $this->Form->input("Result.individual_client_2_email_address", array(
+								'label' => 'Email Address',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_tel_home", array(
+								'label' => 'Tel (H)',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_tel_work", array(
+								'label' => 'Tel (W)',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_mobile", array(
+								'label' => 'Mobile',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_fax", array(
+								'label' => 'Fax',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_date_of_birth", array(
+								'label' => 'Date of Birth',
+								'type' => 'date'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_2_occupation", array(
+								'label' => 'Occupation',
+								'type' => 'text'
+							))
+						?>
+						
+						<?php
+							echo $this->Form->input("Result.individual_client_2_abn", array(
+								'label' => 'ABN, (If Applicable)',
+								'type' => 'text'
+							))
+						?>
+					</fieldset>
 			</fieldset>
 			
 			<fieldset class="individual-client">
@@ -156,60 +316,146 @@
 				<p>Your name must match your ID exactly. Date of Birth required as part of the AML Identification Requirements</p>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.Title", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Given Names", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Surname", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Residential Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Postal Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
-					
-					<?php echo $this->Form->input("Result.Email Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (H)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (W)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Mobile", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Fax", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Date of Birth", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Occupation", array( 'type' => 'text' ) ) ?>
-					
-					I am required to have an ABN?
-					<?php
-						echo $this->Form->input(
-							"Result.abn", array(
-								'type' => 'radio',
-								'options' => array( "Yes", "No" )
-							)
-						)
-					?>
-					<?php echo $this->Form->input( "Result.ABN", array( 'type' => 'text' ) ) ?>
-				</fieldset>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_title", array(
+								'label' => 'Title',
+								'class' => 'small',
+								'type' => 'text',
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_given_names", array(
+								'label' => 'Given Names',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_surname", array(
+								'label' => 'Surname',
+								'type' => 'text'
+							))
+						?>
+						
+						<fieldset class="residential-address">
+							<?php
+								echo $this->Form->input("Result.individual_client_3_residential_address", array(
+									'label' => 'Residential Address',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_3_state", array(
+									'label' => 'State',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_3_postcode", array(
+									'label' => 'Postcode',
+									'type' => 'text'
+								))
+							?>
+						</fieldset>
+						
+						<fieldset class="postal-address">
+							<?php
+								echo $this->Form->input("Result.individual_client_3_postal_address", array(
+									'label' => 'Postal Address',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_3_state", array(
+									'label' => 'State',
+									'type' => 'text'
+								))
+							?>
+							<?php
+								echo $this->Form->input("Result.individual_client_3_postcode", array(
+									'label' => 'Postcode',
+									'type' => 'text'
+								))
+							?>
+						</fieldset>
+						
+						<?php
+							echo $this->Form->input("Result.individual_client_3_email_address", array(
+								'label' => 'Email Address',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_tel_home", array(
+								'label' => 'Tel (H)',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_tel_work", array(
+								'label' => 'Tel (W)',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_mobile", array(
+								'label' => 'Mobile',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_fax", array(
+								'label' => 'Fax',
+								'type' => 'text'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_date_of_birth", array(
+								'label' => 'Date of Birth',
+								'type' => 'date'
+							))
+						?>
+						<?php
+							echo $this->Form->input("Result.individual_client_3_occupation", array(
+								'label' => 'Occupation',
+								'type' => 'text'
+							))
+						?>
+						
+						<?php
+							echo $this->Form->input("Result.individual_client_3_abn", array(
+								'label' => 'ABN, (If Applicable)',
+								'type' => 'text'
+							))
+						?>
+					</fieldset>
 			</fieldset>
 			
 			<fieldset class="individual-client">
 				<legend>D. Company / Corporate Client</legend>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.Company Name", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.ABN/ACN/ARBN", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Country of Incorporation", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.company_name", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.company_abn_acn_arbn", array( 'label' => 'ABN/ ACN /ARBN', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.company_country_of_incorporation", array( 'label' => 'Country of Incorporation', 'type' => 'text' ) ) ?>
 					
-					<?php echo $this->Form->input("Result.Registered Office Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset class="office-address">
+						<?php echo $this->Form->input("Result.company_office_address", array( 'label' => 'Registered Office Address', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_office_state", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_office_postcode", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Principal Place of Business Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset class="business-address">
+						<?php echo $this->Form->input("Result.company_business_address", array( 'label' => 'Principal Place of Business Address', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_business_state", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_business_postcode", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Postal Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset class="postal-address">
+						<?php echo $this->Form->input("Result.company_postal_address", array( 'label' => 'Postal Address', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_postal_state", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_postal_postcode", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					Company Type
 					<?php
 						echo $this->Form->input(
 							'Result.company_type', array(
@@ -221,35 +467,41 @@
 					
 					If Proprietary, complete director & shareholder details below. 
 					
-					<fieldset>
-						<h1>Director Block</h1>
-						<?php echo $this->Form->input("Result.number_of_directors", array( 'type' => 'text' ) ) ?>
-						<?php echo $this->Form->input("Result.Director", array( 'type' => 'text' ) ) ?>
+					<fieldset class="directors">
+						<legend><strong>Each Directors Name in Full</strong> (If there are additional Directors, please supply list of names on a separate page)</legend>
+
+						<?php echo $this->Form->input("Result.company_number_of_directors", array( 'label' => 'No. of Directors', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_director_name_1", array( 'label' => 'Director 1', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_director_name_2", array( 'label' => 'Director 2', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_director_name_3", array( 'label' => 'Director 3', 'type' => 'text' ) ) ?>
 					</fieldset>
 					
-					<fieldset>
-						<h1>Shareholder Block</h1>
-						<?php echo $this->Form->input("Result.Shareholder Details", array( 'type' => 'text' ) ) ?>
-						<?php echo $this->Form->input("Result.Name of Individual", array( 'type' => 'text' ) ) ?>
-						<?php echo $this->Form->input("Result.Residential Address of Individual", array( 'type' => 'text' ) ) ?>
+					<fieldset class="shareholders">
+						<legend><strong>Shareholder Details:</strong> Full name and residential address of each individual who owns, through one or more shareholdings, more than 25% of the issued capital of the Company.</legend>
+						
+						<?php echo $this->Form->input("Result.company_shareholder_name_1", array( 'label' => 'Name of Individual', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.company_shareholder_addresss_1", array( 'label' => 'Residential Address of Individual', 'type' => 'text' ) ) ?>
 					</fieldset>
 				</fieldset>
 			</fieldset>
 			
 			<fieldset class="individual-client">
 				<legend>E. Trustee / Superannuation Client</legend>
-				<p>If you are.</p>
+				
+				<p>If you are applying as a corporate trustee, please also complete section 3D above.</p>
+				<p>If you are applying as an individual/joint trustee, please also complete Section 3A/B/C above.</p>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.Name of Trust", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.ABN/ARBN", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.trustee_name", array( 'label' => 'Name of Trust', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.trustee_abn_arbn", array( 'label' => 'ABN/ ARBN', 'type' => 'text' ) ) ?>
 					
-					<?php echo $this->Form->input("Result.Country of Establishment", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Business name of the Trustee (if any)", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.trustee_country_of_establishment", array( 'label' => 'Country of Establishment', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.trustee_business_name", array( 'label' => 'Business name of the Trustee (if any)', 'type' => 'text' ) ) ?>
 					
 					<?php
 						echo $this->Form->input(
-							'Result.type_of_trust', array(
+							'Result.trustee_type', array(
+								'label' => 'Type of Trust',
 								'type' => 'radio',
 								'options' => array(
 									"Registered managed investment scheme",
@@ -263,23 +515,27 @@
 					
 					<?php
 						echo $this->Form->input(
-							"Result.other_trust", array(
+							"Result.trustee_type_other", array(
 								'type' => 'text',
 								'label' => "If other, please specify (e.g. family, unit, charitable, estatee)" 
 							) 
 						)
 					?>
 					
-					Is the trust an Australian resident for tax purposes?
-					<?php 
-						echo $this->Form->radio( "Result.australian_resident", array( "Yes", "No" ) )
-					?>
-					<?php echo $this->Form->input("Result.If no, please specify country of tax residence", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->radio( "Result.trustee_australian_resident", array( 'label' => 'Is the trust an Australian resident for tax purposes?', "Yes", "No" ) ) ?>
+					<?php echo $this->Form->input( "Result.trustee_country_of_tax_residence", array( 'label' => 'If no, please specify country of tax residence', 'type' => 'text' ) ) ?>
+					
+					<p><strong>NOTE:</strong> Penson (and its related bodies corporate and affiliates) only recognises the Trustee(s) as the investor and not the beneficiary, therefore the trustee(s) details must be given in 3A, B, C or D above as appropriate. However, Penson (and its related bodies corporate and affiliates) is also required to record the individual beneficiary details if you have ticked "Other" in the section "Type of Trust" above.</p>
 					
 					<fieldset>
-						<h1>Beneficiary Block</h1>
-						<?php echo $this->Form->input("Result.Beneficiary Name", array( 'type' => 'text' ) ) ?>
-						<?php echo $this->Form->input("Result.ABN/ACN/ARBN", array( 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.trustee_beneficiary_name_1", array( 'label' => 'Beneficiary 1 Name', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.trustee_abn_acn_arbn_1", array( 'label' => 'ABN/ACN/ARBN: (if applicable)', 'type' => 'text' ) ) ?>
+						
+						<?php echo $this->Form->input("Result.trustee_beneficiary_name_2", array( 'label' => 'Beneficiary 2 Name', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.trustee_abn_acn_arbn_2", array( 'label' => 'ABN/ACN/ARBN: (if applicable)', 'type' => 'text' ) ) ?>
+						
+						<?php echo $this->Form->input("Result.trustee_beneficiary_name_3", array( 'label' => 'Beneficiary 3 Name', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.trustee_abn_acn_arbn_3", array( 'label' => 'ABN/ACN/ARBN: (if applicable)', 'type' => 'text' ) ) ?>
 					</fieldset>
 				</fieldset>
 			</fieldset>
@@ -298,24 +554,28 @@
 				<legend>A. Authorised Agent #1</legend>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.Title", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Given Names", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Surname", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_title_1", array( 'label' => 'Title', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_given_names_1", array( 'label' => 'Given Names', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_surname_1", array( 'label' => 'Surname', 'type' => 'text' ) ) ?>
 		
-					<?php echo $this->Form->input("Result.Residential Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_address_1", array( 'label' => 'Residential Address', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_state_1", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_postcode_1", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Postal Address (if different to above)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_address_1", array( 'label' => 'Postal Address (if different to above)', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_state_1", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_postcode_1", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Email Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (H)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (W)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Mobile", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Fax", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Date of Birth", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_email_1", array( 'label' => 'Email Address', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_phone_home_1", array( 'label' => 'Tel (H)', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_phone_work_1", array( 'label' => 'Tel (W)', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_mobile_1", array( 'label' => 'Mobile', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_fax_1", array( 'label' => 'Fax', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_dob_1", array( 'label' => 'Date of Birth', 'type' => 'date' ) ) ?>
 				</fieldset>
 			</fieldset>
 			
@@ -323,24 +583,28 @@
 				<legend>B. Authorised Agent #2</legend>
 				
 				<fieldset>
-					<?php echo $this->Form->input("Result.Title", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Given Names", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Surname", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_title_2", array( 'label' => 'Title', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_given_names_2", array( 'label' => 'Given Names', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_surname_2", array( 'label' => 'Surname', 'type' => 'text' ) ) ?>
 		
-					<?php echo $this->Form->input("Result.Residential Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_address_2", array( 'label' => 'Residential Address', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_state_2", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_residential_postcode_2", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Postal Address (if different to above)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.State", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Postcode", array( 'type' => 'text' ) ) ?>
+					<fieldset>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_address_2", array( 'label' => 'Postal Address (if different to above)', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_state_2", array( 'label' => 'State', 'type' => 'text' ) ) ?>
+						<?php echo $this->Form->input("Result.authorised_agent_postal_postcode_2", array( 'label' => 'Postcode', 'type' => 'text' ) ) ?>
+					</fieldset>
 					
-					<?php echo $this->Form->input("Result.Email Address", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (H)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Tel (W)", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Mobile", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Fax", array( 'type' => 'text' ) ) ?>
-					<?php echo $this->Form->input("Result.Date of Birth", array( 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_email_2", array( 'label' => 'Email Address', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_phone_home_2", array( 'label' => 'Tel (H)', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_phone_work_2", array( 'label' => 'Tel (W)', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_mobile_2", array( 'label' => 'Mobile', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_fax_2", array( 'label' => 'Fax', 'type' => 'text' ) ) ?>
+					<?php echo $this->Form->input("Result.authorised_agent_dob_2", array( 'label' => 'Date of Birth', 'type' => 'date' ) ) ?>
 				</fieldset>
 			</fieldset>
 		</fieldset>
@@ -350,8 +614,8 @@
 			<legend>5. Resisdency Details For Tax Purposes</legend>
 			<p>Are you a resident of Australia for tax purposes?</p>
 			
-			<?php echo $this->Form->radio( "Result.australian_resident", array( "Yes", "No" ) ) ?>
-			<?php echo $this->Form->input( "Result.country_of_residence", array( 'type' => 'text' ) ) ?>
+			<?php echo $this->Form->radio( "Result.resisdency_australian_resident", array( 'label' => 'Australian Resident', "Yes", "No" ) ) ?>
+			<?php echo $this->Form->input( "Result.resisdency_country_of_residence", array( 'label' => 'Country of Residence', 'type' => 'text' ) ) ?>
 		</fieldset>
 		
 		
@@ -390,7 +654,148 @@
 		<div>
 			<p>Under the Anti‐Money Laundering and Counter‐Terrorism Financing <strong>(AML/CTF)</strong> legislative regime, certain due diligence must be conducted on any prospective client before certain services may be provided to that person. The due diligence includes verifying a prospective client’s identity. Applications made without providing this information cannot be processed until all the necessary information has been provided.</p>
 			<p>The AML/CTF compliance program will also include ongoing customer due diligence and reporting of suspicious matters to AUSTRAC as necessary, which may require your Financial Adviser and/or Penson to collect further information.</p>
+		
+		
+			<h4>Individuals</h4>
+			<table>
+				<th>To be provided by</th>
+				<td>
+					<ul>
+						<li>each individual client</li>
+						<li>each individual who is a trustee</li>
+					</ul>
+				</td>
+			</table>
+			
+			<p>Please provide certified copies of one Primary Photographic Document OR one document from the Primary Non‐Photographic list AND Secondary Identiciation list for EACH such individual.</p>
+			<h5>RELIABLE AND INDEPENDENT VERIFICATION DOCUMENTATION</h5>
+			<h5>DO NOT SEND ORIGINALS: CERTIFIED COPIES ONLY</h5>
+		
+			<h6>Primary Photographic (one proof required)</h6>
+			<ul>
+				<li>Current photographic Australian driver’s licence</li>
+				<li>Current Australian passport</li>
+				<li>Current State or Territory photographic ID card</li>
+				<li>Current foreign passport*</li>
+				<li>Current ID card issued by a foreign government, the United Nations or an agency of the United Nations containing a photograph & signature*</li>
+				<li>Current foreign driver’s licence with photograph & date of birth*</li>
+			</ul>
+		
+			<h5>Or</h5>
+			
+			<h6>Primary Non‐Photographic (one proof required)</h6>
+			<ul>
+				<li>Birth certificate or birth extract issued by a State or Territory</li>
+				<li>Commonwealth citizenship certificate</li>
+				<li>Centrelink Pension card</li>
+				<li>Health Care card issue by Centrelink</li>
+				<li>Foreign citizenship certificate or birth certificate*</li>
+			</ul>
+			
+			<h5>And</h5>
+			
+			<h6>Secondary Identification (one proof required)</h6>
+			<ul>
+				<li>Commonwealth, State and Territory financial benefits notice (less than 12 months old)</li>
+				<li>ATO Tax notice (less than 12 months old)</li>
+				<li>Local government body or utilities provider notice (less than 3 months old) recording provision of services to the person at the address</li>
+				<li>Notice issued within the last 3 months by school principal for a person under 18, recording period of time person attended school and person's residential address</li>
+			</ul>
+			<p># A passport that expired within the two years prior to submitting the application form will also be accepted.</p>
+			<p>* Documents that are written in a language that is not English must be accompanied by an English translation prepared by an accredited translator.</p>
+			
+			<h6>Who may certify your documents as being a true and correct copy of the original</h6>
+			
+			<ul class="check">
+				<li>Legal Practitioner enrolled on the roll of the Supreme Court of a State or Territory, or the High Court of Australia</li>
+				<li>a Judge of a court</li>
+				<li>a magistrate</li>
+				<li>CEO of a Commonwealth Court</li>
+				<li>Registrar or deputy registrar of a court</li>
+				<li>Justice of the Peace</li>
+				<li>Notary public</li>
+				<li>Police Officer</li>
+				<li>An agent of the Australian Postal Corporation</li>
+				<li>Permanent employee of a post office*</li>
+				<li>Australian Consular Officer or Diplomatic Officer</li>
+				<li>Financial institution officer/employee of a bank*</li>
+				<li>A finance company officer*</li>
+				<li>Officer of or authorised representative of a holder of an Australian financial services licence*</li>
+				<li>A member of the Institute of Chartered Accountants in Australia, CPA Australia or National Institute of Accountants membership*</li>
+			</ul>
+			
+			<p>* Persons marked with an asterisk * must have two or more years of continuous service or membership.</p>
+			
+			<p>The eligible certifier must include the following information:</p>
+			<ul>
+				<li>Their full name</li>
+				<li>Address</li>
+				<li>Telephone number</li>
+				<li>The date of certifying</li>
+				<li>Capacity in which they are eligible to certify, and</li>
+				<li>An official stamp/seal if applicable</li>
+			</ul>
+			
+			<p>The certified copy must include the statement, "I certify that this is a true copy of the original document".</p>
+			
+			<p>For photographic documents, the certified copy must include the statement, "I certify that this is a true copy of the original document and the photograph is a true likeness".</p>
+		
+		
+			<h4>2. COMPANIES</h4>
+			<p>If you are a company or Corporate Trustee, you need to provide the following documents:</p>
+			
+			<ul>
+				<li>A full company search of the ASIC database showing:
+					<ol>
+						<li>a. the full name of the company;</li>
+						<li>b. the ABN;</li>
+						<li>c. the registered office address of the company;</li>
+						<li>d. the principal place of business of a company;</li>
+						<li>e. the names of each director of the company (only for a propriety company),</li>
+					</ol>
+				</li>
+				<li>If the company is a regulated company, a search of the licence or other records of the relevant Commonwealth, State or Territory regulator;</li>
+				<li>If the company is listed, a search of the relevant financial market.</li>
+				<li>Certified Identification for each director</li>
+			</ul>
+			
+			<h4>3. TRUSTS AND TRUSTEES</h4>
+			
+			<p>If you are a Trust or Trustee, you need to provide the following documents:</p>
+			<p>Reliable and Independent Verification Documentation</p>
+			
+			<p>Registered managed investment scheme, unregistered managed investment scheme with wholesale clients only which does not make small‐scale offerings under section 1012E, regulated trust (e.g. SMSF) or government superannuation fund</p>
+			
+			<ul class="check">
+				<li>Copy or extract of Trust deed showing full name of trust, that the trust is a registered scheme, regulated trust of superannuation fund.</li>
+				<h5>Other Trust Types (e.g. family, unit, charitable, estate)</h5>
+				<li>Copy or extract of Trust deed showing full name of trust, that the trust is a registered scheme, regulated trust of superannuation fund.</li>
+				<h5>OR</h5>
+				<li>Reliable and independent documents relating to the trust*</li>
+				<h5>OR</h5>
+				<li>Reliable and independent electronic data*</li>
+				<h5>OR</h5>
+				<li>A combination of above</li>
+				<h5>AND</h5>
+			</ul>
+			
+			<p>Where the Trustee is an Individual, verification is to be in accordance with the section for individuals in Section 7(a)</p>
+			<p>Where the Trustee is a Company, verification is to be in accordance with the section for Companies in Section7(b)</p>
+			
+			<p>* Documentation marked with an asterisk * can be from a solicitor, qualified accountant or from the ATO within the last 12 months in relation to the Trust.</p>
+		
 		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		<fieldset class="section">
 			<legend>8. Status</legend>
@@ -440,8 +845,9 @@
 			<?php echo $this->Form->input("Result.Postal Address", array( 'type' => 'textarea' ) ) ?>
 		</fieldset>
 		
-		<h3>10. Chess Sponsorship / Settlement Details</h3>
-		<div>
+		<fieldset class="section">
+			<legend>10. Chess Sponsorship / Settlement Details</legend>
+
 			<p>In order to complete this section, you should refer to the Explanation of CHESS Sponsorship Agreement and the Penson Sponsorship Agreement in Part F of this document.</p>
 			<?php
 				echo $this->Form->input(
@@ -493,62 +899,65 @@
 			<?php echo $this->Form->input("Result.Participant", array( 'type' => 'text' ) ) ?>
 			<?php echo $this->Form->input("Result.PID", array( 'type' => 'text' ) ) ?>
 			<?php echo $this->Form->input("Result.HIN", array( 'type' => 'text' ) ) ?>
-		</div>
+		</fieldset>
 		
-		<h3>11. Direct Debit / Credit Authority</h3>
-		<div>
+		<fieldset class="section">
+			<legend>11. Direct Debit / Credit Authority</legend>
+			
 			<p>In order to complete this section, the Applicant should refer to Penson’s Direct Debit Request & Service Agreement [PART G]. For Direct Debits all bank account holders must sign this section.</p>
 			
-			<p><strong>Default/Nominated Bank Account</strong> The Applicant authorises Penson to directly credit/debit* the Nominated Bank Account.</p>
-			<p>*Please tick applicable box:</p>
-			
-			<?php
-				echo $this->Form->input( "Result.first_nominated_bank_account", array(
-						'type' => 'radio',
-						'options' => array("Credit", "Debit", "Both" )
+			<fieldset class="credit-authority-details">
+				<p><strong>Default/Nominated Bank Account</strong> The Applicant authorises Penson to directly credit/debit* the Nominated Bank Account.</p>
+				
+				<?php
+					echo $this->Form->input( "Result.first_nominated_bank_account", array(
+							'type' => 'radio',
+							'options' => array("Credit", "Debit", "Both" )
+						)
 					)
-				)
-			?>
+				?>
+				
+				<?php
+					echo $this->Form->input(
+						'Result.bank_institution_name', array(
+							'type' => 'text',
+							'label' => "Result.Financial Institution / Bank Name"
+						)
+					) 
+				?>
+				
+				<?php echo $this->Form->input("Result.account_ame", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.bsb", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Account Number", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Bank Account Holder Name", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Signature", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Second Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Third Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
+			</fieldset>
 			
-			<?php
-				echo $this->Form->input(
-					'Result.bank_institution_name', array(
-						'type' => 'text',
-						'label' => "Result.Financial Institution / Bank Name"
+			<fieldset class="credit-authority-details">
+				<p>If there is a second Nominated Bank Account, please provide details below:</p>
+				<p>Non Default/Secondary Bank Account The Applicant authorises Penson to directly credit/debit* the Nominated Bank Account.</p>
+				
+				<?php
+					echo $this->Form->input( "Result.second_nominated_bank_account", array(
+							'type' => 'radio',
+							'options' => array("Credit", "Debit", "Both" )
+						)
 					)
-				) 
-			?>
-			
-			<?php echo $this->Form->input("Result.account_ame", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.bsb", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Account Number", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Bank Account Holder Name", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Signature", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Second Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Third Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
-			
-			<p>If there is a second Nominated Bank Account, please provide details below:</p>
-			<p>Non Default/Secondary Bank Account The Applicant authorises Penson to directly credit/debit* the Nominated Bank Account.</p>
-			<p>*Please tick applicable box:</p>
-			
-			<?php
-				echo $this->Form->input( "Result.second_nominated_bank_account", array(
-						'type' => 'radio',
-						'options' => array("Credit", "Debit", "Both" )
-					)
-				)
-			?>
-			
-			<?php echo $this->Form->input("Result.Financial Institution / Bank Name", array( 'type' => 'text' ) ) ?>
-			
-			<?php echo $this->Form->input("Result.Account Name", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.BSB", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Account Number", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Bank Account Holder Name", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Signature", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Second Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
-			<?php echo $this->Form->input("Result.Third Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
-		</div>
+				?>
+				
+				<?php echo $this->Form->input("Result.Financial Institution / Bank Name", array( 'type' => 'text' ) ) ?>
+				
+				<?php echo $this->Form->input("Result.Account Name", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.BSB", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Account Number", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Bank Account Holder Name", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Signature", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Second Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
+				<?php echo $this->Form->input("Result.Third Bank Account Holder Name (if account is in joint names)", array( 'type' => 'text' ) ) ?>
+			</fieldset>
+		</fieldset>
 		
 		<fieldset class="section">
 			<legend>12. Income Direction</legend>
@@ -651,24 +1060,5 @@
 			</ul>
 		</fieldset>
 	
-	
-	
-	
-	
-	
-	
-	
-	
 <?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Submissions'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Forms'), array('controller' => 'forms', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Form'), array('controller' => 'forms', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

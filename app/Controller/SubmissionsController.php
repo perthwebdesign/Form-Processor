@@ -5,8 +5,38 @@
  */
 class SubmissionsController extends AppController {
 
-	// public $components = array('WkHtmlToPdf');
+	public $components = array('WkHtmlToPdf', 'Email');
 	var $helpers = array('Form', 'Html', 'Text');
+
+
+
+	private function _sendSubmissionEmail( $UserID, $FormID ) {
+
+		$User = $this->Submission->User->find( 'first', array(
+			'conditions' => array(
+					'User.id' => $UserID 
+				) 
+			)
+		);
+
+		$this->Email->to = $User['User']['fullname'] . " <" . $User['User']['email'] . ">";
+	    $this->Email->subject = 'Thank you for your submission with Triple C';
+	    $this->Email->replyTo = 'noreply@tripleccc.com.au';
+	    $this->Email->from = 'Triple C - Online Form Processor <noreply@tripleccc.com.au>';
+		
+		$this->Email->sendAs = 'html';
+		$this->Email->template = 'new_submission';
+		$this->Email->layout = 'default';
+
+		$this->set( 'title_for_layout', 'Triple C - Client Application Form' );
+
+		$this->set( 'User', $User );
+		$this->set( 'FormID', $FormID );
+		
+		$this->Email->send();
+    	return; 
+		
+	}
 
 /**
  * index method
@@ -33,14 +63,30 @@ class SubmissionsController extends AppController {
  */
 	public function view($UserID, $FormID) {
 		
-		$SubmissionResults = $this->Submission->Result->find('all', array(
+		$Submission = $this->Submission->find('first', array(
+			'conditions' => array(
 				'Submission.form_id' => $FormID,
 				'Submission.user_id' => $UserID
+			),
+			'order' => array(
+				'Submission.created DESC'
 			)
-		);
+		));
 		
-		// var_dump($SubmissionResults);
-		$this->set( 'SubmissionResults', $SubmissionResults );
+		//.. sort out how the results are indexed, so the automagic form elements work
+		$ResultsArray = array();
+		foreach( $Submission['Result'] as $Result ) {
+			$ResultsArray[$Result['key']] = $Result['value']; 
+		}
+		
+		$Submission['Result'] = $ResultsArray;
+		
+		$this->request->data = $Submission;
+		
+		$this->layout = 'application_form';
+		$this->WkHtmlToPdf->createPdf('add');
+		
+		$this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
 	}
 	
 	public function pdf( $UserID, $FormID ) {
@@ -69,30 +115,38 @@ class SubmissionsController extends AppController {
 			
 			$this->request->data['Submission'] = $Submission;
 			
-			// var_dump($this->request->data);
-			// die("test");
+			
 			
 			$this->Submission->create();
 			if ($this->Submission->save($this->request->data)) {
-				
-				
-				
 				
 				$this->request->data['Result']['submission_id'] = $this->Submission->getLastInsertID(); 
 				
 				$this->Submission->Result->save($this->request->data['Result']);
 				
+				$this->Submission->User->find(
+					'first', array(
+						'conditions', array(
+						)
+					)
+				);
+				
+				$this->_sendSubmissionEmail( $this->Cookie->read( 'User.id' ), $FormID );
+				
 				$this->Session->setFlash(__('The submission has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => "thankyou/$FormID"));
 			} else {
 				$this->Session->setFlash(__('The submission could not be saved. Please, try again.'));
 			}
 		}
+		
 		$users = $this->Submission->User->find('list');
 		$forms = $this->Submission->Form->find('list');
+		
 		$this->set(compact('User', 'users', 'Form', 'forms'));
 		
 		$this->layout = 'application_form';
+		// $this->WkHtmlToPdf->createPdf();
 	}
 
 /**
@@ -142,4 +196,25 @@ class SubmissionsController extends AppController {
 		$this->Session->setFlash(__('Submission was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+	public function thankyou( $FormID ) {
+		
+		$this->set( 'User',
+			$this->Submission->User->find('first', array(
+			'conditions' => array(
+					'User.id' => $this->Cookie->read( 'User.id' )
+				)
+			))
+		);
+		
+		$this->set( 'Form',
+			$this->Submission->Form->find('first', array(
+			'conditions' => array(
+					'Form.id' => $FormID
+				)
+			))
+		);
+		
+	}
+	
 }

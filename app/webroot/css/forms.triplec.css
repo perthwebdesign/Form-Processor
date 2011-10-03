@@ -128,9 +128,10 @@
 					color: #fff !important;
 					background: #1f497c;
 					text-transform: uppercase !important;
-					padding: 0.4em;
+					text-indent: 0.4em;
+					padding: 0.4em 0;
 					margin: 0.4em 0;
-					font-size: 1.8em !important;
+					font-size: 18px !important;
 				}
 			
 			form#SubmissionAddForm div fieldset div.radio input {
@@ -166,14 +167,18 @@
 						}
 						
 				div.submissions form#SubmissionAddForm fieldset.individual-client,
-				div.submissions form#SubmissionAddForm fieldset.agent-details {
+				div.submissions form#SubmissionAddForm fieldset.agent-details,
+				div.submissions form#SubmissionAddForm fieldset.credit-authority-details
+				{
 					float: left;
 					clear: none;
 					width: 480px;
 					margin: 15px 0;
 				}
 					div.submissions form#SubmissionAddForm fieldset.individual-client legend,
-					div.submissions form#SubmissionAddForm fieldset.agent-details legend {
+					div.submissions form#SubmissionAddForm fieldset.agent-details legend,
+					div.submissions form#SubmissionAddForm fieldset.credit-authority-details legend
+					{
 						font-weight: bold;
 					}
 					div.submissions form#SubmissionAddForm fieldset.individual-client p {
@@ -196,15 +201,26 @@
 					div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div {
 					}
 						div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div label,
-						div.submissions form#SubmissionAddForm fieldset.agent-details div.input label {
+						div.submissions form#SubmissionAddForm fieldset.agent-details div.input label,
+						div.submissions form#SubmissionAddForm fieldset.credit-authority-details label {
 							width: 180px;
 							float: left;
 						}
 						div.submissions form#SubmissionAddForm fieldset.individual-client fieldset div input,
-						div.submissions form#SubmissionAddForm fieldset.agent-details div.input input {
+						div.submissions form#SubmissionAddForm fieldset.agent-details div.input input,
+						div.submissions form#SubmissionAddForm fieldset.credit-authority-details input {
 							width: 230px;
 							float: left;
 						}
+						
+			div.submissions form#SubmissionAddForm fieldset.credit-authority-details div.radio input {
+				float: left;
+				width: 30px;
+			}
+			div.submissions form#SubmissionAddForm fieldset.credit-authority-details div.radio label {
+				float: left;
+				width: 100px;
+			}
 						
 			form#SubmissionAddForm fieldset#individuals-signiture {
 			}
@@ -240,6 +256,13 @@
 				padding: 10px;
 			}
 						
+						
+			form#SubmissionAddForm div fieldset.individual-client fieldset fieldset.directors legend,			
+			form#SubmissionAddForm div fieldset.individual-client fieldset fieldset.shareholders legend {
+				font-weight: normal;
+				padding: 10px 0;
+				font-size: 14px;
+			}
  				
 				
 		
@@ -255,7 +278,7 @@
 		text-transform: uppercase !important;
 		padding: 0.4em;
 		margin: 0.4em 0;
-		font-size: 1.8em !important;
+		font-size: 18px !important;
 	}
 
 	div.details {
@@ -289,6 +312,13 @@
 			clear: both;
 		}
 
+	ul.check {}
+		ul.check li {
+			line-height: 24px;
+			margin: 3px 0;
+			padding-left: 32px;
+			background: url("../img/bg-li-check.png") no-repeat left center;
+		}
 
 
 

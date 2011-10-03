@@ -13,7 +13,17 @@ class FormsController extends AppController {
  */
 	public function index() {
 		$this->Form->recursive = 0;
-		$this->set('forms', $this->paginate());
+		
+		$Forms = $this->paginate();
+		
+		if ( count( $Forms ) == 1 ) {
+			$this->redirect( array(
+				'controller' => 'submissions',
+				'action' => 'add/' . $Forms[0]['Form']['id']
+			));
+		}
+		
+		$this->set('forms', $Forms);
 	}
 
 /**
