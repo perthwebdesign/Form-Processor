@@ -122,7 +122,7 @@ class Sanitize {
  */
 	public static function stripWhitespace($str) {
 		$r = preg_replace('/[\n\r\t]+/', '', $str);
-		return preg_replace('/\s{2,}/', ' ', $r);
+		return preg_replace('/\s{2,}/u', ' ', $r);
 	}
 
 /**
@@ -169,13 +169,11 @@ class Sanitize {
  *
  * Will remove all `<b>`, `<p>`, and `<div>` tags from the $dirty string.
  *
- * @param string $str String to sanitize
- * @param string $tag Tag to remove (add more parameters as needed)
+ * @param string $str,... String to sanitize
  * @return string sanitized String
  */
-	public static function stripTags() {
+	public static function stripTags($str) {
 		$params = func_get_args();
-		$str = $params[0];
 
 		for ($i = 1, $count = count($params); $i < $count; $i++) {
 			$str = preg_replace('/<' . $params[$i] . '\b[^>]*>/i', '', $str);

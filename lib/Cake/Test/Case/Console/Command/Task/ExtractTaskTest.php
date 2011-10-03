@@ -37,6 +37,7 @@ class ExtractTaskTest extends CakeTestCase {
  * @return void
  */
 	public function setUp() {
+		parent::setUp();
 		$out = $this->getMock('ConsoleOutput', array(), array(), '', false);
 		$in = $this->getMock('ConsoleInput', array(), array(), '', false);
 
@@ -60,7 +61,6 @@ class ExtractTaskTest extends CakeTestCase {
 
 		$Folder = new Folder($this->path);
 		$Folder->delete();
-		App::build();
 		CakePlugin::unload();
 	}
 
@@ -291,6 +291,9 @@ class ExtractTaskTest extends CakeTestCase {
 		$this->assertPattern($pattern, $result);
 
 		$pattern = '#msgid "Post title is required"#';
+		$this->assertPattern($pattern, $result);
+
+		$pattern = '#msgid "You may enter up to %s chars \(minimum is %s chars\)"#';
 		$this->assertPattern($pattern, $result);
 
 		$pattern = '#msgid "Post body is required"#';

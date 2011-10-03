@@ -36,9 +36,8 @@ class FixtureTaskTest extends CakeTestCase {
  * fixtures
  *
  * @var array
- * @access public
  */
-	public $fixtures = array('core.article', 'core.comment', 'core.datatype', 'core.binary_test');
+	public $fixtures = array('core.article', 'core.comment', 'core.datatype', 'core.binary_test', 'core.user');
 
 /**
  * setUp method
@@ -166,6 +165,30 @@ class FixtureTaskTest extends CakeTestCase {
 	}
 
 /**
+ * Ensure that fixture data doesn't get overly escaped.
+ *
+ * @return void
+ */
+	function testImportRecordsNoEscaping() {
+		$Article = ClassRegistry::init('Article');
+		$Article->updateAll(array('body' => "'Body \"value\"'"));
+
+		$this->Task->interactive = true;
+		$this->Task->expects($this->at(0))
+			->method('in')
+			->will($this->returnValue('WHERE 1=1 LIMIT 10'));
+
+		$this->Task->connection = 'test';
+		$this->Task->path = '/my/path/';
+		$result = $this->Task->bake('Article', false, array(
+			'fromTable' => true, 
+			'schema' => 'Article',
+			'records' => false
+		));
+		$this->assertRegExp("/'body' => 'Body \"value\"'/", $result, 'Data has bad escaping');
+	}
+
+/**
  * test that execute passes runs bake depending with named model.
  *
  * @return void
@@ -220,16 +243,19 @@ class FixtureTaskTest extends CakeTestCase {
 		$this->Task->connection = 'test';
 		$this->Task->path = '/my/path/';
 		$this->Task->args = array('all');
-		$this->Task->Model->expects($this->any())->method('listAll')
+		$this->Task->Model->expects($this->any())
+			->method('listAll')
 			->will($this->returnValue(array('articles', 'comments')));
 
 		$filename = '/my/path/ArticleFixture.php';
-		$this->Task->expects($this->at(0))->method('createFile')
-			->with($filename, new PHPUnit_Framework_Constraint_PCREMatch('/class ArticleFixture/'));
+		$this->Task->expects($this->at(0))
+			->method('createFile')
+			->with($filename, $this->stringContains('class ArticleFixture'));
 
 		$filename = '/my/path/CommentFixture.php';
-		$this->Task->expects($this->at(1))->method('createFile')
-			->with($filename, new PHPUnit_Framework_Constraint_PCREMatch('/class CommentFixture/'));
+		$this->Task->expects($this->at(1))
+			->method('createFile')
+			->with($filename, $this->stringContains('class CommentFixture'));
 
 		$this->Task->execute();
 	}
@@ -327,6 +353,7 @@ class FixtureTaskTest extends CakeTestCase {
 
 		$result = $this->Task->bake('Article', 'datatypes');
 		$this->assertPattern("/'float_field' => 1/", $result);
+		$this->assertRegExp("/'bool' => 1/", $result);
 
 		$result = $this->Task->bake('Article', 'binary_tests');
 		$this->assertPattern("/'data' => 'Lorem ipsum dolor sit amet'/", $result);

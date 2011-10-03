@@ -19,7 +19,6 @@ class AppTest extends CakeTestCase {
 /**
  * testBuild method
  *
- * @access public
  * @return void
  */
 	public function testBuild() {
@@ -87,7 +86,6 @@ class AppTest extends CakeTestCase {
 /**
  * tests that it is possible to set up paths using the cake 1.3 notation for them (models, behaviors, controllers...)
  *
- * @access public
  * @return void
  */
 	public function testCompatibleBuild() {
@@ -186,9 +184,24 @@ class AppTest extends CakeTestCase {
 	}
 
 /**
+ * test path() with a plugin.
+ *
+ * @return void
+ */
+	public function testPathWithPlugins() {
+		$basepath = CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS;
+		App::build(array(
+			'Plugin' => array($basepath),
+		));
+		CakePlugin::load('TestPlugin');
+
+		$result = App::path('Vendor', 'TestPlugin');
+		$this->assertEquals($basepath . 'TestPlugin' . DS . 'Vendor' . DS, $result[0]);
+	}
+
+/**
  * testBuildWithReset method
  *
- * @access public
  * @return void
  */
 	public function testBuildWithReset() {
@@ -216,7 +229,6 @@ class AppTest extends CakeTestCase {
 /**
  * testCore method
  *
- * @access public
  * @return void
  */
 	public function testCore() {
@@ -242,7 +254,6 @@ class AppTest extends CakeTestCase {
 /**
  * testListObjects method
  *
- * @access public
  * @return void
  */
 	public function testListObjects() {
@@ -308,6 +319,21 @@ class AppTest extends CakeTestCase {
 		$this->assertTrue(in_array('Log', $result));
 
 		App::build();
+	}
+
+/**
+ * Make sure that .svn and friends are excluded from App::objects('plugin')
+ */
+	public function testListObjectsIgnoreDotDirectories() {
+		$path = CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS;
+		App::build(array(
+			'plugins' => array($path)
+		), true);
+		mkdir($path . '.svn');
+		$result = App::objects('plugin', null, false);
+		rmdir($path . '.svn');
+
+		$this->assertNotContains('.svn', $result);
 	}
 
 /**
@@ -404,7 +430,6 @@ class AppTest extends CakeTestCase {
 /**
  * testClassLoading method
  *
- * @access public
  * @return void
  */
 	public function testClassLoading() {
@@ -545,7 +570,6 @@ class AppTest extends CakeTestCase {
 /**
  * testFileLoading method
  *
- * @access public
  * @return void
  */
 	public function testFileLoading () {
@@ -559,7 +583,6 @@ class AppTest extends CakeTestCase {
 /**
  * testFileLoadingWithArray method
  *
- * @access public
  * @return void
  */
 	public function testFileLoadingWithArray() {
@@ -577,7 +600,6 @@ class AppTest extends CakeTestCase {
 /**
  * testFileLoadingReturnValue method
  *
- * @access public
  * @return void
  */
 	public function testFileLoadingReturnValue () {
@@ -597,7 +619,6 @@ class AppTest extends CakeTestCase {
 /**
  * testLoadingWithSearch method
  *
- * @access public
  * @return void
  */
 	public function testLoadingWithSearch () {
@@ -611,7 +632,6 @@ class AppTest extends CakeTestCase {
 /**
  * testLoadingWithSearchArray method
  *
- * @access public
  * @return void
  */
 	public function testLoadingWithSearchArray() {
@@ -639,7 +659,6 @@ class AppTest extends CakeTestCase {
 /**
  * testMultipleLoading method
  *
- * @access public
  * @return void
  */
 	public function testMultipleLoading() {
@@ -745,5 +764,17 @@ class AppTest extends CakeTestCase {
 	public function testClassLocation() {
 		App::uses('MyCustomClass', 'MyPackage/Name');
 		$this->assertEquals('MyPackage/Name', App::location('MyCustomClass'));
+	}
+
+/**
+ * Test that paths() works.
+ *
+ * @return void
+ */
+	public function testPaths() {
+		$result = App::paths();
+		$this->assertArrayHasKey('Plugin', $result);
+		$this->assertArrayHasKey('Controller', $result);
+		$this->assertArrayHasKey('Controller/Component', $result);
 	}
 }

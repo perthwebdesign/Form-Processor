@@ -75,7 +75,6 @@ class MyPluginController extends MyPluginAppController {
  * name property
  *
  * @var string 'MyPlugin'
- * @access public
  */
 	public $name = 'MyPlugin';
 
@@ -83,7 +82,6 @@ class MyPluginController extends MyPluginAppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -127,7 +125,6 @@ class SomePagesController extends AppController {
  * name property
  *
  * @var string 'SomePages'
- * @access public
  */
 	public $name = 'SomePages';
 
@@ -135,7 +132,6 @@ class SomePagesController extends AppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -180,7 +176,6 @@ class OtherPagesController extends MyPluginAppController {
  * name property
  *
  * @var string 'OtherPages'
- * @access public
  */
 	public $name = 'OtherPages';
 
@@ -188,7 +183,6 @@ class OtherPagesController extends MyPluginAppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -223,7 +217,6 @@ class TestDispatchPagesController extends AppController {
  * name property
  *
  * @var string 'TestDispatchPages'
- * @access public
  */
 	public $name = 'TestDispatchPages';
 
@@ -231,7 +224,6 @@ class TestDispatchPagesController extends AppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -273,7 +265,6 @@ class ArticlesTestController extends ArticlesTestAppController {
  * name property
  *
  * @var string 'ArticlesTest'
- * @access public
  */
 	public $name = 'ArticlesTest';
 
@@ -281,7 +272,6 @@ class ArticlesTestController extends ArticlesTestAppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -314,7 +304,6 @@ class SomePostsController extends AppController {
  * name property
  *
  * @var string 'SomePosts'
- * @access public
  */
 	public $name = 'SomePosts';
 
@@ -322,7 +311,6 @@ class SomePostsController extends AppController {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -330,7 +318,6 @@ class SomePostsController extends AppController {
  * autoRender property
  *
  * @var bool false
- * @access public
  */
 	public $autoRender = false;
 
@@ -378,7 +365,6 @@ class TestCachedPagesController extends Controller {
  * name property
  *
  * @var string 'TestCachedPages'
- * @access public
  */
 	public $name = 'TestCachedPages';
 
@@ -386,7 +372,6 @@ class TestCachedPagesController extends Controller {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -394,7 +379,6 @@ class TestCachedPagesController extends Controller {
  * helpers property
  *
  * @var array
- * @access public
  */
 	public $helpers = array('Cache', 'Html');
 
@@ -402,7 +386,6 @@ class TestCachedPagesController extends Controller {
  * cacheAction property
  *
  * @var array
- * @access public
  */
 	public $cacheAction = array(
 		'index' => '+2 sec',
@@ -421,7 +404,6 @@ class TestCachedPagesController extends Controller {
  * viewPath property
  *
  * @var string 'posts'
- * @access public
  */
 	public $viewPath = 'Posts';
 
@@ -460,6 +442,15 @@ class TestCachedPagesController extends Controller {
 		$this->cacheAction = 10;
 		$this->helpers[] = 'Form';
 	}
+
+/**
+ * Test cached views with themes.
+ */
+	public function themed() {
+		$this->cacheAction = 10;
+		$this->viewClass = 'Theme';
+		$this->theme = 'TestTheme';
+	}
 }
 
 /**
@@ -473,7 +464,6 @@ class TimesheetsController extends Controller {
  * name property
  *
  * @var string 'Timesheets'
- * @access public
  */
 	public $name = 'Timesheets';
 
@@ -481,7 +471,6 @@ class TimesheetsController extends Controller {
  * uses property
  *
  * @var array
- * @access public
  */
 	public $uses = array();
 
@@ -1079,7 +1068,7 @@ class DispatcherTest extends CakeTestCase {
 		$Dispatcher = new TestDispatcher();
 		App::build(array(
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
-		));
+		), APP::RESET);
 		CakePlugin::loadAll();
 		Router::reload();
 		Router::parse('/');
@@ -1445,6 +1434,45 @@ class DispatcherTest extends CakeTestCase {
 	}
 
 /**
+ * Test full page caching with themes.
+ *
+ * @return void
+ */
+	public function testFullPageCachingWithThemes() {
+		Configure::write('Cache.disable', false);
+		Configure::write('Cache.check', true);
+		Configure::write('debug', 2);
+
+		Router::reload();
+		Router::connect('/:controller/:action/*');
+
+		App::build(array(
+			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS),
+		), true);
+
+		$dispatcher = new TestDispatcher();
+		$request = new CakeRequest('/test_cached_pages/themed');
+		$response = new CakeResponse();
+
+		ob_start();
+		$dispatcher->dispatch($request, $response);
+		$out = ob_get_clean();
+
+		ob_start();
+		$dispatcher->cached($request->here);
+		$cached = ob_get_clean();
+
+		$result = str_replace(array("\t", "\r\n", "\n"), "", $out);
+		$cached = preg_replace('/<!--+[^<>]+-->/', '', $cached);
+		$expected =  str_replace(array("\t", "\r\n", "\n"), "", $cached);
+
+		$this->assertEqual($expected, $result);
+
+		$filename = $this->__cachePath($request->here);
+		unlink($filename);
+	}
+
+/**
  * testHttpMethodOverrides method
  *
  * @return void
@@ -1517,7 +1545,6 @@ class DispatcherTest extends CakeTestCase {
  * backupEnvironment method
  *
  * @return void
- * @access private
  */
 	function __backupEnvironment() {
 		return array(
@@ -1532,7 +1559,6 @@ class DispatcherTest extends CakeTestCase {
  * reloadEnvironment method
  *
  * @return void
- * @access private
  */
 	function __reloadEnvironment() {
 		foreach ($_GET as $key => $val) {
@@ -1552,7 +1578,6 @@ class DispatcherTest extends CakeTestCase {
  *
  * @param mixed $env
  * @return void
- * @access private
  */
 	function __loadEnvironment($env) {
 		if ($env['reload']) {
@@ -1587,7 +1612,6 @@ class DispatcherTest extends CakeTestCase {
  *
  * @param mixed $her
  * @return string
- * @access private
  */
 	function __cachePath($here) {
 		$path = $here;

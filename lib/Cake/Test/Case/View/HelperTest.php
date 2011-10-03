@@ -33,14 +33,12 @@ class HelperTestPost extends Model {
  * useTable property
  *
  * @var bool false
- * @access public
  */
 	public $useTable = false;
 
 /**
  * schema method
  *
- * @access public
  * @return void
  */
 	public function schema($field = false) {
@@ -60,7 +58,6 @@ class HelperTestPost extends Model {
  * hasAndBelongsToMany property
  *
  * @var array
- * @access public
  */
 	public $hasAndBelongsToMany = array('HelperTestTag'=> array('with' => 'HelperTestPostsTag'));
 }
@@ -76,14 +73,12 @@ class HelperTestComment extends Model {
  * useTable property
  *
  * @var bool false
- * @access public
  */
 	public $useTable = false;
 
 /**
  * schema method
  *
- * @access public
  * @return void
  */
 	public function schema($field = false) {
@@ -92,6 +87,7 @@ class HelperTestComment extends Model {
 			'author_id' => array('type' => 'integer', 'null' => false, 'default' => '', 'length' => '8'),
 			'title' => array('type' => 'string', 'null' => false, 'default' => '', 'length' => '255'),
 			'body' => array('type' => 'string', 'null' => true, 'default' => '', 'length' => ''),
+			'BigField' => array('type' => 'string', 'null' => true, 'default' => '', 'length' => ''),
 			'created' => array('type' => 'date', 'null' => true, 'default' => '', 'length' => ''),
 			'modified' => array('type' => 'datetime', 'null' => true, 'default' => '', 'length' => null)
 		);
@@ -110,14 +106,12 @@ class HelperTestTag extends Model {
  * useTable property
  *
  * @var bool false
- * @access public
  */
 	public $useTable = false;
 
 /**
  * schema method
  *
- * @access public
  * @return void
  */
 	public function schema($field = false) {
@@ -142,14 +136,12 @@ class HelperTestPostsTag extends Model {
  * useTable property
  *
  * @var bool false
- * @access public
  */
 	public $useTable = false;
 
 /**
  * schema method
  *
- * @access public
  * @return void
  */
 	public function schema($field = false) {
@@ -193,7 +185,6 @@ class HelperTest extends CakeTestCase {
 /**
  * setUp method
  *
- * @access public
  * @return void
  */
 	public function setUp() {
@@ -212,7 +203,6 @@ class HelperTest extends CakeTestCase {
 /**
  * tearDown method
  *
- * @access public
  * @return void
  */
 	public function tearDown() {
@@ -239,6 +229,10 @@ class HelperTest extends CakeTestCase {
 			array(
 				'HelperTest.1.Comment.body',
 				array('HelperTest', '1', 'Comment', 'body')
+			),
+			array(
+				'HelperTestComment.BigField',
+				array('HelperTestComment', 'BigField')
 			)
 		);
 	}
@@ -247,7 +241,6 @@ class HelperTest extends CakeTestCase {
  * testFormFieldNameParsing method
  *
  * @dataProvider entityProvider
- * @access public
  * @return void
  */
 	public function testSetEntity($entity, $expected) {
@@ -292,6 +285,10 @@ class HelperTest extends CakeTestCase {
 		$expected = array('HelperTestComment', 'id', 'time');
 		$this->assertEquals($expected, $this->Helper->entity());
 
+		$this->Helper->setEntity('HelperTestComment.created.year');
+		$expected = array('HelperTestComment', 'created', 'year');
+		$this->assertEquals($expected, $this->Helper->entity());
+
 		$this->Helper->setEntity(null);
 		$this->Helper->setEntity('ModelThatDoesntExist.field_that_doesnt_exist');
 		$expected = array('ModelThatDoesntExist', 'field_that_doesnt_exist');
@@ -311,6 +308,44 @@ class HelperTest extends CakeTestCase {
 		$this->assertEquals($expected, $this->Helper->entity());
 
 		$this->assertEquals('HelperTestComment', $this->Helper->model());
+	}
+
+/**
+ * Test that setEntity doesn't make CamelCase fields that are not associations an
+ * associated model.
+ *
+ * @return void
+ */
+	public function testSetEntityAssociatedCamelCaseField() {
+		$this->Helper->fieldset = array(
+			'HelperTestComment' => array(
+				'fields' => array('BigField' => array('type' => 'integer'))
+			)
+		);
+		$this->Helper->setEntity('HelperTestComment', true);
+		$this->Helper->setEntity('HelperTestComment.BigField');
+
+		$this->assertEquals('HelperTestComment', $this->Helper->model());
+		$this->assertEquals('BigField', $this->Helper->field());
+	}
+
+/**
+ * Test that multiple fields work when they are camelcase and in fieldset
+ *
+ * @return void
+ */
+	public function testSetEntityAssociatedCamelCaseFieldHabtmMultiple() {
+		$this->Helper->fieldset = array(
+			'HelperTestComment' => array(
+				'fields' => array('Tag' => array('type' => 'multiple'))
+			)
+		);
+		$this->Helper->setEntity('HelperTestComment', true);
+		$this->Helper->setEntity('Tag');
+
+		$this->assertEquals('Tag', $this->Helper->model());
+		$this->assertEquals('Tag', $this->Helper->field());
+		$this->assertEquals(array('Tag', 'Tag'), $this->Helper->entity());
 	}
 
 /**
@@ -539,7 +574,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testFieldsWithSameName method
  *
- * @access public
  * @return void
  */
 	public function testFieldsWithSameName() {
@@ -561,7 +595,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testFieldSameAsModel method
  *
- * @access public
  * @return void
  */
 	public function testFieldSameAsModel() {
@@ -579,7 +612,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testFieldSuffixForDate method
  *
- * @access public
  * @return void
  */
 	public function testFieldSuffixForDate() {
@@ -597,7 +629,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testMulitDimensionValue method
  *
- * @access public
  * @return void
  */
 	public function testMultiDimensionValue() {
@@ -631,7 +662,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testClean method
  *
- * @access public
  * @return void
  */
 	public function testClean() {
@@ -660,7 +690,6 @@ class HelperTest extends CakeTestCase {
 /**
  * testMultiDimensionalField method
  *
- * @access public
  * @return void
  */
 	public function testMultiDimensionalField() {

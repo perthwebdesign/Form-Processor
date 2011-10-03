@@ -98,7 +98,6 @@ class ControllerTestCaseTestController extends AppController {
 
 }
 
-
 /**
  * ControllerTestCaseTest
  *
@@ -110,7 +109,6 @@ class ControllerTestCaseTest extends CakeTestCase {
  * fixtures property
  *
  * @var array
- * @access public
  */
 	public $fixtures = array('core.post', 'core.author', 'core.test_plugin_comment');
 
@@ -126,9 +124,9 @@ class ControllerTestCaseTest extends CakeTestCase {
 			'Controller' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Controller' . DS),
 			'Model' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Model' . DS),
 			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS)
-		));
+		), App::RESET);
 		CakePlugin::loadAll();
-		$this->Case = new ControllerTestCase();
+		$this->Case = $this->getMockForAbstractClass('ControllerTestCase');
 		Router::reload();
 	}
 
@@ -270,7 +268,20 @@ class ControllerTestCaseTest extends CakeTestCase {
 	}
 
 /**
+ * Make sure testAction() can hit plugin controllers.
+ *
+ * @return void
+ */
+	public function testTestActionWithPlugin() {
+		$Controller = $this->Case->generate('TestPlugin.Tests');
+		$this->Case->testAction('/test_plugin/tests/index');
+		$this->assertEquals('It is a variable', $this->Case->controller->viewVars['test_value']);
+	}
+
+/**
  * Tests using loaded routes during tests
+ *
+ * @return void
  */
 	public function testUseRoutes() {
 		Router::connect('/:controller/:action/*');
@@ -379,6 +390,7 @@ class ControllerTestCaseTest extends CakeTestCase {
 		$result = $this->Case->testAction('/tests_apps_posts/add', array('return' => 'vars'));
 		$this->assertTrue(array_key_exists('posts', $result));
 		$this->assertEqual(count($result['posts']), 4);
+		$this->assertTrue($this->Case->controller->request->is('post'));
 	}
 
 /**

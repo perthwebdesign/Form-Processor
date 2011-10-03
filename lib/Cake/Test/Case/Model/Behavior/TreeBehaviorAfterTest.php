@@ -33,7 +33,6 @@ class TreeBehaviorAfterTest extends CakeTestCase {
  * Whether backup global state for each test method or not
  *
  * @var bool false
- * @access public
  */
 	public $backupGlobals = false;
 
@@ -41,7 +40,6 @@ class TreeBehaviorAfterTest extends CakeTestCase {
  * settings property
  *
  * @var array
- * @access public
  */
 	public $settings = array(
 		'modelClass' => 'AfterTree',
@@ -54,14 +52,12 @@ class TreeBehaviorAfterTest extends CakeTestCase {
  * fixtures property
  *
  * @var array
- * @access public
  */
 	public $fixtures = array('core.after_tree');
 
 /**
  * Tests the afterSave callback in the model
  *
- * @access public
  * @return void
  */
 	public function testAftersaveCallback() {
@@ -69,6 +65,7 @@ class TreeBehaviorAfterTest extends CakeTestCase {
 
 		$expected = array('AfterTree' => array('name' => 'Six and One Half Changed in AfterTree::afterSave() but not in database', 'parent_id' => 6, 'lft' => 11, 'rght' => 12));
 		$result = $this->Tree->save(array('AfterTree' => array('name' => 'Six and One Half', 'parent_id' => 6)));
+		$expected['AfterTree']['id'] = $this->Tree->id;
 		$this->assertEqual($expected, $result);
 
 		$expected = array('AfterTree' => array('name' => 'Six and One Half', 'parent_id' => 6, 'lft' => 11, 'rght' => 12, 'id' => 8));

@@ -30,7 +30,6 @@ class ModelValidationTest extends BaseModelTest {
 /**
  * Tests validation parameter order in custom validation methods
  *
- * @access public
  * @return void
  */
 	public function testValidationParams() {
@@ -122,7 +121,6 @@ class ModelValidationTest extends BaseModelTest {
 /**
  * Tests validation parameter fieldList in invalidFields
  *
- * @access public
  * @return void
  */
 	public function testInvalidFieldsWithFieldListParams() {
@@ -194,7 +192,6 @@ class ModelValidationTest extends BaseModelTest {
 /**
  * testValidates method
  *
- * @access public
  * @return void
  */
 	public function testValidates() {
@@ -646,6 +643,7 @@ class ModelValidationTest extends BaseModelTest {
  * Test that missing validation methods trigger errors in development mode.
  * Helps to make developement easier.
  *
+ * @expectedException PHPUnit_Framework_Error
  * @return void
  */
 	public function testMissingValidationErrorTriggering() {
@@ -659,7 +657,6 @@ class ModelValidationTest extends BaseModelTest {
 				'required' => true
 			)
 		);
-		$this->expectError();
 		$TestModel->invalidFields(array('fieldList' => array('title')));
 	}
 
@@ -680,6 +677,48 @@ class ModelValidationTest extends BaseModelTest {
 		);
 		$TestModel->invalidFields(array('fieldList' => array('title')));
 		$this->assertEquals($TestModel->validationErrors, array());
+	}
+
+/**
+ * Test placeholder replacement when validation message is an array
+ *
+ * @return void
+ */
+	public function testValidationMessageAsArray() {
+		$TestModel = new ValidationTest1();
+		$TestModel->validate = array(
+			'title' => array(
+				'minLength' => array(
+					'rule' => array('minLength', 6),
+					'required' => true,
+					'message' => 'Minimum length allowed is %d chars',
+					'last' => false
+				),
+				'between' => array(
+					'rule' => array('between', 5, 15),
+					'message' => array('You may enter up to %s chars (minimum is %s chars)', 14, 6)
+				)
+			)
+		);
+
+		$TestModel->create();
+		$TestModel->invalidFields();
+		$expected = array(
+			'title' => array(
+				'Minimum length allowed is 6 chars',
+			)
+		);
+		$this->assertEquals($TestModel->validationErrors, $expected);
+
+		$TestModel->create(array('title' => 'foo'));
+		$TestModel->invalidFields();
+		$expected = array(
+			'title' => array(
+				'Minimum length allowed is 6 chars',
+				'You may enter up to 14 chars (minimum is 6 chars)'
+			)
+		);
+		$this->assertEquals($TestModel->validationErrors, $expected);
 	}
 
 }

@@ -31,8 +31,7 @@
  *		Database/Mysql 		- MySQL 4 & 5,
  *		Database/Sqlite		- SQLite (PHP5 only),
  *		Database/Postgres	- PostgreSQL 7 and higher,
- *		Database/Sqlserver	- Microsoft SQL Server 2005 and higher,
- *		Database/Oracle		- Oracle 8 and higher
+ *		Database/Sqlserver	- Microsoft SQL Server 2005 and higher
  *
  * You can add custom database drivers (or override existing drivers) by adding the
  * appropriate file to app/Model/Datasource/Database.  Drivers should be named 'MyDriver.php',
@@ -55,6 +54,8 @@
  * For MySQL, Postgres specifies the character encoding to use when connecting to the
  * database. Uses database default not specified.
  *
+ * unix_socket =>
+ * For MySQL to connect via socket specify the `unix_socket` parameter instead of `host` and `port`
  */
 class DATABASE_CONFIG {
 
@@ -66,6 +67,7 @@ class DATABASE_CONFIG {
 		'password' => 'password',
 		'database' => 'database_name',
 		'prefix' => '',
+		//'encoding' => 'utf8',
 	);
 
 	public $test = array(
@@ -76,5 +78,6 @@ class DATABASE_CONFIG {
 		'password' => 'password',
 		'database' => 'test_database_name',
 		'prefix' => '',
+		//'encoding' => 'utf8',
 	);
 }

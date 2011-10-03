@@ -38,7 +38,9 @@ class ThemeView extends View {
  */
 	public function __construct($controller) {
 		parent::__construct($controller);
-		$this->theme = $controller->theme;
+		if ($controller) {
+			$this->theme = $controller->theme;
+		}
 	}
 
 /**
@@ -47,7 +49,6 @@ class ThemeView extends View {
  * @param string $plugin The name of the plugin views are being found for.
  * @param boolean $cached Set to true to force dir scan.
  * @return array paths
- * @access protected
  * @todo Make theme path building respect $cached parameter.
  */
 	protected function _paths($plugin = null, $cached = true) {

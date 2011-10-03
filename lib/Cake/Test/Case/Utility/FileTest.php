@@ -30,7 +30,6 @@ class FileTest extends CakeTestCase {
  * File property
  *
  * @var mixed null
- * @access public
  */
 	public $File = null;
 
@@ -59,7 +58,6 @@ class FileTest extends CakeTestCase {
 /**
  * testBasic method
  *
- * @access public
  * @return void
  */
 	public function testBasic() {
@@ -121,7 +119,6 @@ class FileTest extends CakeTestCase {
 /**
  * testRead method
  *
- * @access public
  * @return void
  */
 	public function testRead() {
@@ -153,7 +150,6 @@ class FileTest extends CakeTestCase {
 /**
  * testOffset method
  *
- * @access public
  * @return void
  */
 	public function testOffset() {
@@ -186,7 +182,6 @@ class FileTest extends CakeTestCase {
 /**
  * testOpen method
  *
- * @access public
  * @return void
  */
 	public function testOpen() {
@@ -211,7 +206,6 @@ class FileTest extends CakeTestCase {
 /**
  * testClose method
  *
- * @access public
  * @return void
  */
 	public function testClose() {
@@ -229,7 +223,6 @@ class FileTest extends CakeTestCase {
 /**
  * testCreate method
  *
- * @access public
  * @return void
  */
 	public function testCreate() {
@@ -241,7 +234,6 @@ class FileTest extends CakeTestCase {
 /**
  * testOpeningNonExistantFileCreatesIt method
  *
- * @access public
  * @return void
  */
 	public function testOpeningNonExistantFileCreatesIt() {
@@ -255,7 +247,6 @@ class FileTest extends CakeTestCase {
 /**
  * testPrepare method
  *
- * @access public
  * @return void
  */
 	public function testPrepare() {
@@ -276,7 +267,6 @@ class FileTest extends CakeTestCase {
 /**
  * testReadable method
  *
- * @access public
  * @return void
  */
 	public function testReadable() {
@@ -290,7 +280,6 @@ class FileTest extends CakeTestCase {
 /**
  * testWritable method
  *
- * @access public
  * @return void
  */
 	public function testWritable() {
@@ -304,7 +293,6 @@ class FileTest extends CakeTestCase {
 /**
  * testExecutable method
  *
- * @access public
  * @return void
  */
 	public function testExecutable() {
@@ -318,7 +306,6 @@ class FileTest extends CakeTestCase {
 /**
  * testLastAccess method
  *
- * @access public
  * @return void
  */
 	public function testLastAccess() {
@@ -333,7 +320,6 @@ class FileTest extends CakeTestCase {
 /**
  * testLastChange method
  *
- * @access public
  * @return void
  */
 	public function testLastChange() {
@@ -350,7 +336,6 @@ class FileTest extends CakeTestCase {
 /**
  * testWrite method
  *
- * @access public
  * @return void
  */
 	public function testWrite() {
@@ -381,7 +366,6 @@ class FileTest extends CakeTestCase {
 /**
  * testAppend method
  *
- * @access public
  * @return void
  */
 	public function testAppend() {
@@ -410,13 +394,12 @@ class FileTest extends CakeTestCase {
 /**
  * testDelete method
  *
- * @access public
  * @return void
  */
 	public function testDelete() {
 		if (!$tmpFile = $this->_getTmpFile()) {
 			return false;
-		};
+		}
 
 		if (!file_exists($tmpFile)) {
 			touch($tmpFile);
@@ -433,9 +416,26 @@ class FileTest extends CakeTestCase {
 	}
 
 /**
+ * Windows has issues unlinking files if there are
+ * active filehandles open.
+ *
+ * @return void
+ */
+	function testDeleteAfterRead() {
+		if (!$tmpFile = $this->_getTmpFile()) {
+			return false;
+		}
+		if (!file_exists($tmpFile)) {
+			touch($tmpFile);
+		}
+		$file =& new File($tmpFile);
+		$file->read();
+		$this->assertTrue($file->delete());
+	}
+
+/**
  * testCopy method
  *
- * @access public
  * @return void
  */
 	public function testCopy() {
@@ -465,7 +465,6 @@ class FileTest extends CakeTestCase {
  * getTmpFile method
  *
  * @param bool $paintSkip
- * @access protected
  * @return void
  */
 	function _getTmpFile($paintSkip = true) {

@@ -30,6 +30,20 @@ App::uses('String', 'Utility');
  */
 class HelpFormatter {
 /**
+ * The maximum number of arguments shown when generating usage.
+ *
+ * @var integer
+ */
+	protected $_maxArgs = 6;
+
+/**
+ * The maximum number of options shown when generating usage.
+ *
+ * @var integer
+ */
+	protected $_maxOptions = 6;
+
+/**
  * Build the help formatter for a an OptionParser
  *
  * @param ConsoleOptionParser $parser The option parser help is being generated for.
@@ -122,18 +136,29 @@ class HelpFormatter {
 		if (!empty($subcommands)) {
 			$usage[] = '[subcommand]';
 		}
+		$options = array();
 		foreach ($this->_parser->options() as $option) {
-			$usage[] = $option->usage();
+			$options[] = $option->usage();
 		}
+		if (count($options) > $this->_maxOptions){
+			$options = array('[options]');
+		}
+		$usage = array_merge($usage, $options);
+		$args = array();
 		foreach ($this->_parser->arguments() as $argument) {
-			$usage[] = $argument->usage();
+			$args[] = $argument->usage();
 		}
+		if (count($args) > $this->_maxArgs) {
+			$args = array('[arguments]');
+		}
+		$usage = array_merge($usage, $args);
 		return implode(' ', $usage);
 	}
 
 /**
  * Iterate over a collection and find the longest named thing.
  *
+ * @param array $collection
  * @return integer
  */
 	protected function _getMaxLength($collection) {
@@ -155,7 +180,7 @@ class HelpFormatter {
 		$xml = new SimpleXmlElement('<shell></shell>');
 		$xml->addChild('command', $parser->command());
 		$xml->addChild('description', $parser->description());
-		
+
 		$xml->addChild('epilog', $parser->epilog());
 		$subcommands = $xml->addChild('subcommands');
 		foreach ($parser->subcommands() as $command) {

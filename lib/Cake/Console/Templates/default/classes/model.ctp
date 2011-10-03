@@ -19,10 +19,21 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-echo "<?php\n"; ?>
+echo "<?php\n";
+echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n";
+?>
 /**
  * <?php echo $name ?> Model
  *
+<?php
+foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $assocType) {
+	if (!empty($associations[$assocType])) {
+		foreach ($associations[$assocType] as $relation) {
+			echo " * @property {$relation['className']} \${$relation['alias']}\n";
+		}
+	}
+}
+?>
  */
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
 <?php if ($useDbConfig != 'default'): ?>

@@ -377,7 +377,7 @@ class ExtractTask extends Shell {
  * @param string $field the name of the field that is being processed
  * @param array $rules the set of validation rules for the field
  * @param string $file the file name where this validation rule was found
- * @param string domain default domain to bind the validations to
+ * @param string $domain default domain to bind the validations to
  * @return void
  */
 	protected function _processValidationRules($field, $rules, $file, $domain) {
@@ -389,8 +389,18 @@ class ExtractTask extends Shell {
 			}
 
 			foreach ($rules as $rule => $validateProp) {
+				$message = null;
 				if (isset($validateProp['message'])) {
-					$this->_strings[$domain][$validateProp['message']][$file][] = 'validation for field ' . $field;
+					if (is_array($validateProp['message'])) {
+						$message = $validateProp['message'][0];
+					} else {
+						$message = $validateProp['message'];
+					}
+				} elseif (is_string($rule)) {
+					$message = $rule;
+				}
+				if ($message) {
+					$this->_strings[$domain][$message][$file][] = 'validation for field ' . $field;
 				}
 			}
 		}
@@ -433,6 +443,9 @@ class ExtractTask extends Shell {
 /**
  * Prepare a file to be stored
  *
+ * @param string $domain
+ * @param string $header
+ * @param string $sentence
  * @return void
  */
 	protected function _store($domain, $header, $sentence) {
@@ -504,12 +517,12 @@ class ExtractTask extends Shell {
 		$output .= "\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n\"\n\n";
 		return $output;
 	}
-	
+
 /**
  * Get the strings from the position forward
  *
- * @param int $position Actual position on tokens array
- * @param int $target Number of strings to extract
+ * @param integer $position Actual position on tokens array
+ * @param integer $target Number of strings to extract
  * @return array Strings extracted
  */
 	protected function _getStrings(&$position, $target) {

@@ -32,12 +32,12 @@ class ConnectionManagerTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
+		parent::tearDown();
 		CakePlugin::unload();
 	}
 /**
  * testEnumConnectionObjects method
  *
- * @access public
  * @return void
  */
 	public function testEnumConnectionObjects() {
@@ -51,7 +51,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetDataSource method
  *
- * @access public
  * @return void
  */
 	public function testGetDataSource() {
@@ -86,13 +85,12 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetPluginDataSource method
  *
- * @access public
  * @return void
  */
 	public function testGetPluginDataSource() {
 		App::build(array(
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
-		));
+		), App::RESET);
 		CakePlugin::load('TestPlugin');
 		$name = 'test_source';
 		$config = array('datasource' => 'TestPlugin.TestSource');
@@ -108,13 +106,12 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetPluginDataSourceAndPluginDriver method
  *
- * @access public
  * @return void
  */
 	public function testGetPluginDataSourceAndPluginDriver() {
 		App::build(array(
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
-		));
+		), App::RESET);
 		CakePlugin::load('TestPlugin');
 		$name = 'test_plugin_source_and_driver';
 		$config = array('datasource' => 'TestPlugin.Database/TestDriver');
@@ -132,7 +129,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetLocalDataSourceAndPluginDriver method
  *
- * @access public
  * @return void
  */
 	public function testGetLocalDataSourceAndPluginDriver() {
@@ -155,7 +151,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetPluginDataSourceAndLocalDriver method
  *
- * @access public
  * @return void
  */
 	public function testGetPluginDataSourceAndLocalDriver() {
@@ -181,7 +176,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testSourceList method
  *
- * @access public
  * @return void
  */
 	public function testSourceList() {
@@ -194,7 +188,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testGetSourceName method
  *
- * @access public
  * @return void
  */
 	public function testGetSourceName() {
@@ -212,7 +205,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testLoadDataSource method
  *
- * @access public
  * @return void
  */
 	public function testLoadDataSource() {
@@ -243,7 +235,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testCreateDataSource method
  *
- * @access public
  * @return void
  */
 	public function testCreateDataSourceWithIntegrationTests() {
@@ -276,7 +267,6 @@ class ConnectionManagerTest extends CakeTestCase {
 /**
  * testConnectionData method
  *
- * @access public
  * @return void
  */
 	public function testConnectionData() {
@@ -285,7 +275,7 @@ class ConnectionManagerTest extends CakeTestCase {
 			'Model/Datasource' => array(
 				CAKE . 'Test' . DS . 'test_app' . DS . 'Model' . DS . 'Datasource' . DS
 			)
-		));
+		), App::RESET);
 		CakePlugin::loadAll();
 		$expected = array(
 		    'datasource' => 'Test2Source'

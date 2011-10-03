@@ -28,22 +28,29 @@ class SmtpTransport extends AbstractTransport {
 /**
  * Socket to SMTP server
  *
- * @var object CakeScoket
+ * @var CakeSocket
  */
 	protected $_socket;
 
 /**
  * CakeEmail
  *
- * @var object CakeEmail
+ * @var CakeEmail
  */
 	protected $_cakeEmail;
 
 /**
+ * Content of email to return
+ *
+ * @var string
+ */
+	protected $_content;
+
+/**
  * Send mail
  *
- * @params object $email CakeEmail
- * @return boolean
+ * @param CakeEmail $email CakeEmail
+ * @return array
  * @throws SocketException
  */
 	public function send(CakeEmail $email) {
@@ -55,14 +62,14 @@ class SmtpTransport extends AbstractTransport {
 		$this->_sendData();
 		$this->_disconnect();
 
-		return true;
+		return $this->_content;
 	}
 
 /**
  * Set the configuration
  *
  * @param array $config
- * @return object $this
+ * @return void
  */
 	public function config($config = array()) {
 		$default = array(
@@ -158,10 +165,11 @@ class SmtpTransport extends AbstractTransport {
 	protected function _sendData() {
 		$this->_smtpSend('DATA', '354');
 
-		$headers = $this->_cakeEmail->getHeaders(array_fill_keys(array('from', 'sender', 'replyTo', 'readReceipt', 'returnPath', 'to', 'cc', 'bcc', 'subject'), true));
+		$headers = $this->_cakeEmail->getHeaders(array('from', 'sender', 'replyTo', 'readReceipt', 'returnPath', 'to', 'cc', 'bcc', 'subject'));
 		$headers = $this->_headersToString($headers);
 		$message = implode("\r\n", $this->_cakeEmail->message());
 		$this->_smtpSend($headers . "\r\n\r\n" . $message . "\r\n\r\n\r\n.");
+		$this->_content = array('headers' => $headers, 'message' => $message);
 	}
 
 /**

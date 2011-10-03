@@ -29,14 +29,12 @@ class SecurityTest extends CakeTestCase {
  * sut property
  *
  * @var mixed null
- * @access public
  */
 	public $sut = null;
 
 /**
  * testInactiveMins method
  *
- * @access public
  * @return void
  */
 	public function testInactiveMins() {
@@ -53,7 +51,6 @@ class SecurityTest extends CakeTestCase {
 /**
  * testGenerateAuthkey method
  *
- * @access public
  * @return void
  */
 	public function testGenerateAuthkey() {
@@ -63,7 +60,6 @@ class SecurityTest extends CakeTestCase {
 /**
  * testValidateAuthKey method
  *
- * @access public
  * @return void
  */
 	public function testValidateAuthKey() {
@@ -74,7 +70,6 @@ class SecurityTest extends CakeTestCase {
 /**
  * testHash method
  *
- * @access public
  * @return void
  */
 	public function testHash() {
@@ -123,7 +118,6 @@ class SecurityTest extends CakeTestCase {
 /**
  * testCipher method
  *
- * @access public
  * @return void
  */
 	public function testCipher() {
@@ -150,10 +144,17 @@ class SecurityTest extends CakeTestCase {
 		$key = 'my_key';
 		$result = Security::cipher($txt, $key);
 		$this->assertEqual(Security::cipher($result, $key), $txt);
+	}
 
+/**
+ * testCipherEmptyKey method
+ *
+ * @expectedException PHPUnit_Framework_Error
+ * @return void
+ */
+	public function testCipherEmptyKey() {
 		$txt = 'some_text';
 		$key = '';
-		$this->expectError();
 		$result = Security::cipher($txt, $key);
 	}
 }

@@ -38,7 +38,6 @@ class ModelTaskTest extends CakeTestCase {
  * fixtures
  *
  * @var array
- * @access public
  */
 	public $fixtures = array(
 		'core.bake_article', 'core.bake_comment', 'core.bake_articles_bake_tag',
@@ -727,6 +726,10 @@ STRINGEND;
 			)
 		);
 		$result = $this->Task->bake('BakeArticle', compact('associations'));
+		$this->assertContains(' * @property BakeUser $BakeUser', $result);
+		$this->assertContains(' * @property OtherModel $OtherModel', $result);
+		$this->assertContains(' * @property BakeComment $BakeComment', $result);
+		$this->assertContains(' * @property BakeTag $BakeTag', $result);
 		$this->assertPattern('/\$hasAndBelongsToMany \= array\(/', $result);
 		$this->assertPattern('/\$hasMany \= array\(/', $result);
 		$this->assertPattern('/\$belongsTo \= array\(/', $result);
@@ -751,7 +754,8 @@ STRINGEND;
 		$this->Task->expects($this->once())->method('createFile')
 			->with($path, new PHPUnit_Framework_Constraint_PCREMatch('/BakeArticle extends ControllerTestAppModel/'));
 
-		$this->Task->bake('BakeArticle', array(), array());
+		$result = $this->Task->bake('BakeArticle', array(), array());
+		$this->assertContains("App::uses('ControllerTestAppModel', 'ControllerTest.Model');", $result);
 
 		$this->assertEqual(count(ClassRegistry::keys()), 0);
 		$this->assertEqual(count(ClassRegistry::mapKeys()), 0);

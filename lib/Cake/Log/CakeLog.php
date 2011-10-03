@@ -42,6 +42,19 @@
  * using CakeLogs's methods.  If you don't configure any adapters, and write to the logs
  * a default FileLog will be autoconfigured for you.
  *
+ * ### Configuring Log adapters
+ *
+ * You can configure log adapters in your applications `bootstrap.php` file.  A sample configuration
+ * would look like:
+ *
+ * `CakeLog::config('my_log', array('engine' => 'FileLog'));`
+ *
+ * See the documentation on CakeLog::config() for more detail.
+ *
+ * ### Writing to the log
+ *
+ * You write to the logs using CakeLog::write().  See its documentation for more information.
+ *
  * @package       Cake.Log
  */
 class CakeLog {
@@ -69,11 +82,7 @@ class CakeLog {
  *
  * Will configure a FileLog instance to use the specified path.  All options that are not `engine`
  * are passed onto the logging adapter, and handled there.  Any class can be configured as a logging
- * adapter as long as it implements a `write` method with the following signature.
- *
- * `write($type, $message)`
- *
- * For an explaination of these parameters, see CakeLog::write()
+ * adapter as long as it implements the methods in CakeLogInterface.
  *
  * @param string $key The keyname for this logger, used to remove the logger later.
  * @param array $config Array of configuration information for the logger
@@ -103,6 +112,7 @@ class CakeLog {
  *
  * @param string $loggerName the plugin.className of the logger class you want to build.
  * @return mixed boolean false on any failures, string of classname to use if search was successful.
+ * @throws CakeLogException
  */
 	protected static function _getLogger($loggerName) {
 		list($plugin, $loggerName) = pluginSplit($loggerName, true);
@@ -127,7 +137,7 @@ class CakeLog {
  * Removes a stream from the active streams.  Once a stream has been removed
  * it will no longer have messages sent to it.
  *
- * @param string $keyname Key name of a configured stream to remove.
+ * @param string $streamName Key name of a configured stream to remove.
  * @return void
  */
 	public static function drop($streamName) {
@@ -161,7 +171,7 @@ class CakeLog {
  * ### Usage:
  *
  * Write a message to the 'warning' log:
- * 
+ *
  * `CakeLog::write('warning', 'Stuff is broken here');`
  *
  * @param string $type Type of message being written
@@ -190,7 +200,7 @@ class CakeLog {
 		if (empty(self::$_streams)) {
 			self::_autoConfig();
 		}
-		foreach (self::$_streams as $key => $logger) {
+		foreach (self::$_streams as $logger) {
 			$logger->write($type, $message);
 		}
 		return true;

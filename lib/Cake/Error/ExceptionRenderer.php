@@ -47,7 +47,7 @@ App::uses('CakeResponse', 'Network');
  *
  * Using a subclass of ExceptionRenderer gives you full control over how Exceptions are rendered, you
  * can configure your class in your core.php, with `Configure::write('Exception.renderer', 'MyClass');`
- * You should place any custom exception renderers in `app/libs`.
+ * You should place any custom exception renderers in `app/Lib/Error`.
  *
  * @package       Cake.Error
  */
@@ -57,7 +57,6 @@ class ExceptionRenderer {
  * Controller instance.
  *
  * @var Controller
- * @access public
  */
 	public $controller = null;
 
@@ -87,8 +86,7 @@ class ExceptionRenderer {
  * If the error is a CakeException it will be converted to either a 400 or a 500
  * code error depending on the code used to construct the error.
  *
- * @param string $method Method producing the error
- * @param array $messages Error messages
+ * @param Exception $exception Exception
  */
 	public function __construct(Exception $exception) {
 		$this->controller = $this->_getController($exception);
@@ -109,6 +107,10 @@ class ExceptionRenderer {
 			if ($template == 'internalError') {
 				$template = 'error500';
 			}
+		} elseif ($exception instanceof PDOException) {
+			$method = 'pdoError';
+			$template = 'pdo_error';
+			$code = 500;
 		} elseif (!$methodExists) {
 			$method = 'error500';
 			if ($code >= 400 && $code < 500) {
@@ -142,7 +144,6 @@ class ExceptionRenderer {
  *
  * @param Exception $exception The exception to get a controller for.
  * @return Controller
- * @access protected
  */
 	protected function _getController($exception) {
 		App::uses('CakeErrorController', 'Controller');
@@ -173,7 +174,7 @@ class ExceptionRenderer {
 /**
  * Generic handler for the internal framework errors CakePHP can generate.
  *
- * @param CakeExeption $error
+ * @param CakeException $error
  * @return void
  */
 	protected function _cakeError(CakeException $error) {
@@ -197,7 +198,8 @@ class ExceptionRenderer {
 /**
  * Convenience method to display a 400 series page.
  *
- * @param array $params Parameters for controller
+ * @param Exception $error
+ * @return void
  */
 	public function error400($error) {
 		$message = $error->getMessage();
@@ -217,11 +219,12 @@ class ExceptionRenderer {
 /**
  * Convenience method to display a 500 page.
  *
- * @param array $params Parameters for controller
+ * @param Exception $error
+ * @return void
  */
 	public function error500($error) {
 		$url = $this->controller->request->here();
-		$code = ($error->getCode() > 500) ? $error->getCode() : 500;
+		$code = ($error->getCode() > 500 && $error->getCode() < 506) ? $error->getCode() : 500;
 		$this->controller->response->statusCode($code);
 		$this->controller->set(array(
 			'name' => __d('cake', 'An Internal Error Has Occurred'),
@@ -232,9 +235,33 @@ class ExceptionRenderer {
 	}
 
 /**
+ * Convenience method to display a PDOException.
+ *
+ * @param PDOException $error
+ * @return void
+ */
+	public function pdoError(PDOException $error) {
+		$url = $this->controller->request->here();
+		$code = 500;
+		$this->controller->response->statusCode($code);
+		$this->controller->set(array(
+			'code' => $code,
+			'url' => h($url),
+			'name' => $error->getMessage(),
+			'error' => $error,
+		));
+		try {
+			$this->_outputMessage($this->template);
+		} catch (Exception $e) {
+			$this->_outputMessageSafe('error500');
+		}
+	}
+
+/**
  * Generate the response using the controller object.
  *
  * @param string $template The template to render.
+ * @return void
  */
 	protected function _outputMessage($template) {
 		$this->controller->render($template);
@@ -247,6 +274,7 @@ class ExceptionRenderer {
  * and doesn't call component methods.
  *
  * @param string $template The template to render
+ * @return void
  */
 	protected function _outputMessageSafe($template) {
 		$this->controller->helpers = array('Form', 'Html', 'Session');

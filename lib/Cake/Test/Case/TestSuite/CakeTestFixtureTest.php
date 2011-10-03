@@ -178,11 +178,13 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * setUp method
  *
- * @access public
  * @return void
  */
 	public function setUp() {
-		$this->criticDb = $this->getMock('DboSource');
+		$methods = array_diff(get_class_methods('DboSource'), array('enabled'));
+		$methods[] = 'connect';
+
+		$this->criticDb = $this->getMock('DboSource', $methods);
 		$this->criticDb->fullDebug = true;
 		$this->db = ConnectionManager::getDataSource('test');
 		$this->_backupConfig = $this->db->config;
@@ -191,7 +193,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * tearDown
  *
- * @access public
  * @return void
  */
 	public function tearDown() {
@@ -202,7 +203,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * testInit
  *
- * @access public
  * @return void
  */
 	public function testInit() {
@@ -225,6 +225,7 @@ class CakeTestFixtureTest extends CakeTestCase {
  * @return void
  */
 	public function testInitDbPrefix() {
+		$this->skipIf($this->db instanceof Sqlite, 'Cannot open 2 connections to Sqlite');
 		$db = ConnectionManager::getDataSource('test');
 		$Source = new CakeTestFixtureTestFixture();
 		$Source->drop($db);
@@ -265,6 +266,7 @@ class CakeTestFixtureTest extends CakeTestCase {
  * @return void
  */
 	public function testInitDbPrefixDuplication() {
+		$this->skipIf($this->db instanceof Sqlite, 'Cannot open 2 connections to Sqlite');
 		$db = ConnectionManager::getDataSource('test');
 		$backPrefix = $db->config['prefix'];
 		$db->config['prefix'] = 'cake_fixture_test_';
@@ -294,6 +296,7 @@ class CakeTestFixtureTest extends CakeTestCase {
  * @return void
  */
 	public function testInitModelTablePrefix() {
+		$this->skipIf($this->db instanceof Sqlite, 'Cannot open 2 connections to Sqlite');
 		$this->skipIf(!empty($this->db->config['prefix']), 'Cannot run this test, you have a database connection prefix.');
 
 		$Source = new CakeTestFixtureTestFixture();
@@ -316,7 +319,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * testImport
  *
- * @access public
  * @return void
  */
 	public function testImport() {
@@ -374,7 +376,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * test create method
  *
- * @access public
  * @return void
  */
 	public function testCreate() {
@@ -393,7 +394,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * test the insert method
  *
- * @access public
  * @return void
  */
 	public function testInsert() {
@@ -434,7 +434,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * test the insert method
  *
- * @access public
  * @return void
  */
 	public function testInsertStrings() {
@@ -459,7 +458,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * Test the drop method
  *
- * @access public
  * @return void
  */
 	public function testDrop() {
@@ -473,7 +471,7 @@ class CakeTestFixtureTest extends CakeTestCase {
 		$this->assertTrue($return);
 
 		$return = $Fixture->drop($this->criticDb);
-		$this->assertFalse($return);
+		$this->assertTrue($return);
 
 		unset($Fixture->fields);
 		$return = $Fixture->drop($this->criticDb);
@@ -483,7 +481,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 /**
  * Test the truncate method.
  *
- * @access public
  * @return void
  */
 	public function testTruncate() {

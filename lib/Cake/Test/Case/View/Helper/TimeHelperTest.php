@@ -29,7 +29,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * setUp method
  *
- * @access public
  * @return void
  */
 	public function setUp() {
@@ -41,7 +40,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * tearDown method
  *
- * @access public
  * @return void
  */
 	public function tearDown() {
@@ -51,7 +49,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testToQuarter method
  *
- * @access public
  * @return void
  */
 	public function testToQuarter() {
@@ -80,7 +77,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testTimeAgoInWords method
  *
- * @access public
  * @return void
  */
 	public function testTimeAgoInWords() {
@@ -299,7 +295,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testNice method
  *
- * @access public
  * @return void
  */
 	public function testNice() {
@@ -329,7 +324,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testNiceShort method
  *
- * @access public
  * @return void
  */
 	public function testNiceShort() {
@@ -350,7 +344,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testDaysAsSql method
  *
- * @access public
  * @return void
  */
 	public function testDaysAsSql() {
@@ -364,7 +357,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testDayAsSql method
  *
- * @access public
  * @return void
  */
 	public function testDayAsSql() {
@@ -377,7 +369,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testToUnix method
  *
- * @access public
  * @return void
  */
 	public function testToUnix() {
@@ -392,7 +383,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testToAtom method
  *
- * @access public
  * @return void
  */
 	public function testToAtom() {
@@ -402,17 +392,25 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testToRss method
  *
- * @access public
  * @return void
  */
 	public function testToRss() {
 		$this->assertEqual(date('r'), $this->Time->toRss(time()));
+
+		if (!$this->skipIf(!class_exists('DateTimeZone'), '%s DateTimeZone class not available.')) {
+			$timezones = array('Europe/London', 'Europe/Brussels', 'UTC', 'America/Denver', 'America/Caracas', 'Asia/Kathmandu');
+			foreach($timezones as $timezone) {
+				$yourTimezone = new DateTimeZone($timezone);
+				$yourTime = new DateTime('now', $yourTimezone);
+				$userOffset = $yourTimezone->getOffset($yourTime) / HOUR;
+				$this->assertEqual($yourTime->format('r'), $this->Time->toRss(time(), $userOffset));	
+			}	
+		}
 	}
 
 /**
  * testFormat method
  *
- * @access public
  * @return void
  */
 	public function testFormat() {
@@ -429,7 +427,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testOfGmt method
  *
- * @access public
  * @return void
  */
 	public function testGmt() {
@@ -456,7 +453,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testIsToday method
  *
- * @access public
  * @return void
  */
 	public function testIsToday() {
@@ -473,7 +469,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testIsThisWeek method
  *
- * @access public
  * @return void
  */
 	public function testIsThisWeek() {
@@ -495,7 +490,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testIsThisMonth method
  *
- * @access public
  * @return void
  */
 	public function testIsThisMonth() {
@@ -513,7 +507,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testIsThisYear method
  *
- * @access public
  * @return void
  */
 	public function testIsThisYear() {
@@ -525,7 +518,6 @@ class TimeHelperTest extends CakeTestCase {
 	/**
  * testWasYesterday method
  *
- * @access public
  * @return void
  */
 	public function testWasYesterday() {
@@ -545,7 +537,6 @@ class TimeHelperTest extends CakeTestCase {
 	/**
  * testIsTomorrow method
  *
- * @access public
  * @return void
  */
 	public function testIsTomorrow() {
@@ -562,7 +553,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * testWasWithinLast method
  *
- * @access public
  * @return void
  */
 	public function testWasWithinLast() {
@@ -607,7 +597,6 @@ class TimeHelperTest extends CakeTestCase {
 	/**
  * testUserOffset method
  *
- * @access public
  * @return void
  */
 	public function testUserOffset() {
@@ -625,7 +614,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * test fromString()
  *
- * @access public
  * @return void
  */
 	public function testFromString() {
@@ -648,7 +636,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * test converting time specifiers using a time definition localfe file
  *
- * @access public
  * @return void
  */
 	public function testConvertSpecifiers() {
@@ -756,7 +743,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * test formatting dates taking in account preferred i18n locale file
  *
- * @access public
  * @return void
  */
 	public function testI18nFormat() {
@@ -786,7 +772,6 @@ class TimeHelperTest extends CakeTestCase {
 /**
  * test new format() syntax which inverts first and secod parameters
  *
- * @access public
  * @return void
  */
 	public function testFormatNewSyntax() {

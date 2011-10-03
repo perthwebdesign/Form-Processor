@@ -98,7 +98,7 @@ class InterceptContentHelper extends Helper {
  *
  * @package       Cake.TestSuite
  */
-class ControllerTestCase extends CakeTestCase {
+abstract class ControllerTestCase extends CakeTestCase {
 
 /**
  * The controller to test in testAction
@@ -175,13 +175,19 @@ class ControllerTestCase extends CakeTestCase {
  *
  * ### Options:
  *
- * - `data` POST or GET data to pass
- * - `method` POST or GET
+ * - `data` POST or GET data to pass. Depends on the method.
+ * - `method` POST or GET. Defaults to POST.
+ * - `return` Specify the return type you want.  Choose from:
+ *     - `vars` Get the set view variables.
+ *     - `view` Get the rendered view, without a layout.
+ *     - `contents` Get the rendered view including the layout.
+ *     - `result` Get the return value of the controller action.  Useful 
+ *       for testing requestAction methods.
  *
  * @param string $url The url to test
  * @param array $options See options
  */
-	private function _testAction($url = '', $options = array()) {
+	protected function _testAction($url = '', $options = array()) {
 		$this->vars = $this->result = $this->view = $this->contents = $this->headers = null;
 
 		$options = array_merge(array(
@@ -190,17 +196,18 @@ class ControllerTestCase extends CakeTestCase {
 			'return' => 'result'
 		), $options);
 
+		$_SERVER['REQUEST_METHOD'] = strtoupper($options['method']);
 		if (strtoupper($options['method']) == 'GET') {
 			$_GET = $options['data'];
 			$_POST = array();
 		} else {
-			$_POST = array('data' => $options['data']);
+			$_POST = $options['data'];
 			$_GET = array();
 		}
 		$request = new CakeRequest($url);
 		$Dispatch = new ControllerTestDispatcher();
 		foreach (Router::$routes as $route) {
-			if (is_a($route, 'RedirectRoute')) {
+			if ($route instanceof RedirectRoute) {
 				$route->response = $this->getMock('CakeResponse', array('send'));
 			}
 		}
@@ -213,8 +220,9 @@ class ControllerTestCase extends CakeTestCase {
 		if ($this->controller !== null && Inflector::camelize($request->params['controller']) !== $this->controller->name) {
 			$this->controller = null;
 		}
+		$plugin = empty($request->params['plugin']) ? '' : Inflector::camelize($request->params['plugin']) . '.';
 		if ($this->controller === null && $this->autoMock) {
-			$this->generate(Inflector::camelize($request->params['controller']));
+			$this->generate(Inflector::camelize($plugin . $request->params['controller']));
 		}
 		$params = array();
 		if ($options['return'] == 'result') {
@@ -227,8 +235,10 @@ class ControllerTestCase extends CakeTestCase {
 		$this->result = $Dispatch->dispatch($request, $Dispatch->response, $params);
 		$this->controller = $Dispatch->testController;
 		if ($options['return'] != 'result') {
-			$this->vars = $this->controller->View->viewVars;
-			$this->view = $this->controller->View->_viewNoLayout;
+			if (isset($this->controller->View)) {
+				$this->vars = $this->controller->View->viewVars;
+				$this->view = $this->controller->View->_viewNoLayout;
+			}
 			$this->contents = $this->controller->response->body();
 		}
 		$this->headers = $Dispatch->response->header();

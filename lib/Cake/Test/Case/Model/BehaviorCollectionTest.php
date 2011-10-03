@@ -33,7 +33,6 @@ class TestBehavior extends ModelBehavior {
  * mapMethods property
  *
  * @var array
- * @access public
  */
 	public $mapMethods = array('/test(\w+)/' => 'testMethod', '/look for\s+(.+)/' => 'speakEnglish');
 
@@ -42,7 +41,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param array $config
- * @access public
  * @return void
  */
 	public function setup($model, $config = array()) {
@@ -58,7 +56,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param mixed $query
- * @access public
  * @return void
  */
 	public function beforeFind($model, $query) {
@@ -87,7 +84,6 @@ class TestBehavior extends ModelBehavior {
  * @param mixed $model
  * @param mixed $results
  * @param mixed $primary
- * @access public
  * @return void
  */
 	public function afterFind($model, $results, $primary) {
@@ -115,7 +111,6 @@ class TestBehavior extends ModelBehavior {
  * beforeSave method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function beforeSave($model) {
@@ -142,7 +137,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param mixed $created
- * @access public
  * @return void
  */
 	public function afterSave($model, $created) {
@@ -174,7 +168,6 @@ class TestBehavior extends ModelBehavior {
  * beforeValidate method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function beforeValidate($model) {
@@ -206,7 +199,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param bool $cascade
- * @access public
  * @return void
  */
 	public function beforeDelete($model, $cascade = true) {
@@ -235,7 +227,6 @@ class TestBehavior extends ModelBehavior {
  * afterDelete method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function afterDelete($model) {
@@ -254,7 +245,6 @@ class TestBehavior extends ModelBehavior {
  * onError method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function onError($model, $error) {
@@ -268,7 +258,6 @@ class TestBehavior extends ModelBehavior {
  * beforeTest method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function beforeTest($model) {
@@ -284,7 +273,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param bool $param
- * @access public
  * @return void
  */
 	public function testMethod(Model $model, $param = true) {
@@ -297,7 +285,6 @@ class TestBehavior extends ModelBehavior {
  * testData method
  *
  * @param mixed $model
- * @access public
  * @return void
  */
 	public function testData(Model $model) {
@@ -313,7 +300,6 @@ class TestBehavior extends ModelBehavior {
  *
  * @param mixed $model
  * @param mixed $field
- * @access public
  * @return void
  */
 	public function validateField(Model $model, $field) {
@@ -326,7 +312,6 @@ class TestBehavior extends ModelBehavior {
  * @param mixed $model
  * @param mixed $method
  * @param mixed $query
- * @access public
  * @return void
  */
 	public function speakEnglish(Model $model, $method, $query) {
@@ -430,7 +415,6 @@ class BehaviorCollectionTest extends CakeTestCase {
  * fixtures property
  *
  * @var array
- * @access public
  */
 	public $fixtures = array(
 		'core.apple', 'core.sample', 'core.article', 'core.user', 'core.comment',
@@ -467,7 +451,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorBinding method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorBinding() {
@@ -566,7 +549,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorToggling method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorToggling() {
@@ -602,7 +584,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorFindCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorFindCallbacks() {
@@ -661,7 +642,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorHasManyFindCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorHasManyFindCallbacks() {
@@ -733,7 +713,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 	/**
  * testBehaviorHasOneFindCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorHasOneFindCallbacks() {
@@ -803,7 +782,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 	/**
  * testBehaviorBelongsToFindCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorBelongsToFindCallbacks() {
@@ -872,7 +850,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorSaveCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorSaveCallbacks() {
@@ -885,16 +862,24 @@ class BehaviorCollectionTest extends CakeTestCase {
 
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'off'));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $record);
+		$result = $Sample->save($record);
+		$expected = $record;
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'test'));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $record);
+		$result = $Sample->save($record);
+		$expected = $record;
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'modify'));
 		$expected = Set::insert($record, 'Sample.name', 'sample99 modified before');
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $expected);
+		$result = $Sample->save($record);
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->disable('Test');
 		$this->assertIdentical($Sample->save($record), $record);
@@ -902,20 +887,30 @@ class BehaviorCollectionTest extends CakeTestCase {
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'off', 'afterSave' => 'on'));
 		$expected = Set::merge($record, array('Sample' => array('aftersave' => 'modified after on create')));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $expected);
+		$result = $Sample->save($record);
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertEqual($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'modify', 'afterSave' => 'modify'));
 		$expected = Set::merge($record, array('Sample' => array('name' => 'sample99 modified before modified after on create')));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $expected);
+		$result = $Sample->save($record);
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('beforeSave' => 'off', 'afterSave' => 'test'));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $record);
+		$expected = $record;
+		$result = $Sample->save($record);
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('afterSave' => 'test2'));
 		$Sample->create();
-		$this->assertIdentical($Sample->save($record), $record);
+		$expected = $record;
+		$result = $Sample->save($record);
+		$expected['Sample']['id'] = $Sample->id;
+		$this->assertIdentical($result, $expected);
 
 		$Sample->Behaviors->attach('Test', array('beforeFind' => 'off', 'afterFind' => 'off'));
 		$Sample->recursive = -1;
@@ -935,7 +930,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorDeleteCallbacks method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorDeleteCallbacks() {
@@ -970,7 +964,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorOnErrorCallback method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorOnErrorCallback() {
@@ -985,7 +978,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorValidateCallback method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorValidateCallback() {
@@ -1014,7 +1006,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorValidateMethods method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorValidateMethods() {
@@ -1023,7 +1014,7 @@ class BehaviorCollectionTest extends CakeTestCase {
 		$Apple->validate['color'] = 'validateField';
 
 		$result = $Apple->save(array('name' => 'Genetically Modified Apple', 'color' => 'Orange'));
-		$this->assertEqual(array_keys($result['Apple']), array('name', 'color', 'modified', 'created'));
+		$this->assertEqual(array_keys($result['Apple']), array('name', 'color', 'modified', 'created', 'id'));
 
 		$Apple->create();
 		$result = $Apple->save(array('name' => 'Regular Apple', 'color' => 'Red'));
@@ -1033,7 +1024,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorMethodDispatching method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorMethodDispatching() {
@@ -1059,7 +1049,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * testBehaviorMethodDispatchingWithData method
  *
- * @access public
  * @return void
  */
 	public function testBehaviorMethodDispatchingWithData() {
@@ -1123,7 +1112,6 @@ class BehaviorCollectionTest extends CakeTestCase {
 /**
  * Test attach and detaching
  *
- * @access public
  * @return void
  */
 	public function testBehaviorAttachAndDetach() {

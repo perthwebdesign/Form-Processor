@@ -40,7 +40,6 @@ class TheHtmlTestController extends Controller {
  * name property
  *
  * @var string 'TheTest'
- * @access public
  */
 	public $name = 'TheTest';
 
@@ -48,7 +47,6 @@ class TheHtmlTestController extends Controller {
  * uses property
  *
  * @var mixed null
- * @access public
  */
 	public $uses = null;
 }
@@ -136,7 +134,6 @@ class HtmlHelperTest extends CakeTestCase {
  * html property
  *
  * @var object
- * @access public
  */
 	public $Html = null;
 
@@ -168,7 +165,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testDocType method
  *
- * @access public
  * @return void
  */
 	public function testDocType() {
@@ -186,7 +182,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testLink method
  *
- * @access public
  * @return void
  */
 	public function testLink() {
@@ -211,6 +206,14 @@ class HtmlHelperTest extends CakeTestCase {
 		$result = $this->Html->link('Home', '/home', array('default' => false));
 		$expected = array(
 			'a' => array('href' => '/home', 'onclick' => 'event.returnValue = false; return false;'),
+			'Home',
+			'/a'
+		);
+		$this->assertTags($result, $expected);
+
+		$result = $this->Html->link('Home', '/home', array('default' => false, 'onclick' => 'someFunction();'));
+		$expected = array(
+			'a' => array('href' => '/home', 'onclick' => 'someFunction(); event.returnValue = false; return false;'),
 			'Home',
 			'/a'
 		);
@@ -320,7 +323,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testImageTag method
  *
- * @access public
  * @return void
  */
 	public function testImageTag() {
@@ -368,7 +370,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * Tests creation of an image tag using a theme and asset timestamping
  *
- * @access public
  * @return void
  */
 	public function testImageTagWithTheme() {
@@ -410,7 +411,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * test theme assets in main webroot path
  *
- * @access public
  * @return void
  */
 	public function testThemeAssetsInMainWebrootPath() {
@@ -440,10 +440,12 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testStyle method
  *
- * @access public
  * @return void
  */
 	public function testStyle() {
+		$result = $this->Html->style('display: none;');
+		$this->assertEqual($result, 'display: none;');
+
 		$result = $this->Html->style(array('display'=> 'none', 'margin'=>'10px'));
 		$expected = 'display:none; margin:10px;';
 		$this->assertPattern('/^display\s*:\s*none\s*;\s*margin\s*:\s*10px\s*;?$/', $expected);
@@ -457,7 +459,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testCssLink method
  *
- * @access public
  * @return void
  */
 	public function testCssLink() {
@@ -608,6 +609,12 @@ class HtmlHelperTest extends CakeTestCase {
 		$result = $this->Html->script('test.json');
 		$expected = array(
 			'script' => array('type' => 'text/javascript', 'src' => 'js/test.json.js')
+		);
+		$this->assertTags($result, $expected);
+
+		$result = $this->Html->script('http://example.com/test.json');
+		$expected = array(
+			'script' => array('type' => 'text/javascript', 'src' => 'http://example.com/test.json')
 		);
 		$this->assertTags($result, $expected);
 
@@ -769,7 +776,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testCharsetTag method
  *
- * @access public
  * @return void
  */
 	public function testCharsetTag() {
@@ -788,10 +794,11 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testBreadcrumb method
  *
- * @access public
  * @return void
  */
 	public function testBreadcrumb() {
+		$this->assertNull($this->Html->getCrumbs());
+		
 		$this->Html->addCrumb('First', '#first');
 		$this->Html->addCrumb('Second', '#second');
 		$this->Html->addCrumb('Third', '#third');
@@ -853,12 +860,33 @@ class HtmlHelperTest extends CakeTestCase {
 			'Fourth'
 		);
 		$this->assertTags($result, $expected);
+
+		$result = $this->Html->getCrumbs('-', 'Start');
+		$expected = array(
+			array('a' => array('href' => '/')),
+			'Start',
+			'/a',
+			'-',
+			array('a' => array('href' => '#first')),
+			'First',
+			'/a',
+			'-',
+			array('a' => array('href' => '#second')),
+			'Second',
+			'/a',
+			'-',
+			array('a' => array('href' => '#third')),
+			'Third',
+			'/a',
+			'-',
+			'Fourth'
+		);
+		$this->assertTags($result, $expected);
 	}
 
 /**
  * testNestedList method
  *
- * @access public
  * @return void
  */
 	public function testNestedList() {
@@ -1126,7 +1154,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testMeta method
  *
- * @access public
  * @return void
  */
 	public function testMeta() {
@@ -1164,6 +1191,12 @@ class HtmlHelperTest extends CakeTestCase {
 			array('link' => array('href' => 'preg:/.*favicon\.ico/', 'type' => 'image/x-icon', 'rel' => 'shortcut icon'))
 		);
 		$this->assertTags($result, $expected);
+		$result = $this->Html->meta('icon');
+		$expected = array(
+			'link' => array('href' => 'preg:/.*favicon\.ico/', 'type' => 'image/x-icon', 'rel' => 'icon'),
+			array('link' => array('href' => 'preg:/.*favicon\.ico/', 'type' => 'image/x-icon', 'rel' => 'shortcut icon'))
+		);
+		$this->assertTags($result, $expected);
 
 		$result = $this->Html->meta('keywords', 'these, are, some, meta, keywords');
 		$this->assertTags($result, array('meta' => array('name' => 'keywords', 'content' => 'these, are, some, meta, keywords')));
@@ -1187,7 +1220,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testTableHeaders method
  *
- * @access public
  * @return void
  */
 	public function testTableHeaders() {
@@ -1199,7 +1231,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testTableCells method
  *
- * @access public
  * @return void
  */
 	public function testTableCells() {
@@ -1273,7 +1304,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testTag method
  *
- * @access public
  * @return void
  */
 	public function testTag() {
@@ -1296,6 +1326,9 @@ class HtmlHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testUseTag() {
+		$result = $this->Html->useTag('unknowntag');
+		$this->assertEqual($result, '');
+
 		$result = $this->Html->useTag('formend');
 		$this->assertTags($result, '/form');
 
@@ -1309,7 +1342,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testDiv method
  *
- * @access public
  * @return void
  */
 	public function testDiv() {
@@ -1326,7 +1358,6 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testPara method
  *
- * @access public
  * @return void
  */
 	public function testPara() {
@@ -1343,11 +1374,12 @@ class HtmlHelperTest extends CakeTestCase {
 /**
  * testCrumbList method
  *
- * @access public
  *
  * @return void
  */
 	public function testCrumbList() {
+		$this->assertNull($this->Html->getCrumbList());
+
 		$this->Html->addCrumb('Home', '/', array('class' => 'home'));
 		$this->Html->addCrumb('Some page', '/some_page');
 		$this->Html->addCrumb('Another page');

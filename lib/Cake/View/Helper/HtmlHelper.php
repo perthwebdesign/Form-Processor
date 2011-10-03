@@ -120,7 +120,6 @@ class HtmlHelper extends AppHelper {
  * Breadcrumbs.
  *
  * @var array
- * @access protected
  */
 	protected $_crumbs = array();
 
@@ -128,23 +127,20 @@ class HtmlHelper extends AppHelper {
  * Names of script files that have been included once
  *
  * @var array
- * @access private
  */
-	private $__includedScripts = array();
+	protected $_includedScripts = array();
 /**
  * Options for the currently opened script block buffer if any.
  *
  * @var array
- * @access protected
  */
 	protected $_scriptBlockOptions = array();
 /**
  * Document type definitions
  *
  * @var array
- * @access private
  */
-	private $__docTypes = array(
+	protected $_docTypes = array(
 		'html4-strict'  => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">',
 		'html4-trans'  => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
 		'html4-frame'  => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">',
@@ -156,7 +152,16 @@ class HtmlHelper extends AppHelper {
 	);
 
 /**
- * Default Constructor
+ * Constructor
+ *
+ * ### Settings
+ *
+ * - `configFile` A file containing an array of tags you wish to redefine.
+ *
+ * ### Customizing tag sets
+ *
+ * Using the `configFile` option you can redefine the tag HtmlHelper will use.
+ * The file named should be compatible with HtmlHelper::loadConfig().
  *
  * @param View $View The View this helper is being attached to.
  * @param array $settings Configuration settings for the helper.
@@ -197,12 +202,11 @@ class HtmlHelper extends AppHelper {
  *
  * @param string $type Doctype to use.
  * @return string Doctype string
- * @access public
  * @link http://book.cakephp.org/view/1439/docType
  */
 	public function docType($type = 'xhtml-strict') {
-		if (isset($this->__docTypes[$type])) {
-			return $this->__docTypes[$type];
+		if (isset($this->_docTypes[$type])) {
+			return $this->_docTypes[$type];
 		}
 		return null;
 	}
@@ -219,7 +223,6 @@ class HtmlHelper extends AppHelper {
  * @param array $options Other attributes for the generated tag. If the type attribute is html,
  *    rss, atom, or icon, the mime-type is returned.
  * @return string A completed `<link />` element.
- * @access public
  * @link http://book.cakephp.org/view/1438/meta
  */
 	public function meta($type, $url = null, $options = array()) {
@@ -284,7 +287,6 @@ class HtmlHelper extends AppHelper {
  * @param string $charset The character set to be used in the meta tag. If empty,
  *  The App.encoding value will be used. Example: "utf-8".
  * @return string A meta tag containing the specified character set.
- * @access public
  * @link http://book.cakephp.org/view/1436/charset
  */
 	public function charset($charset = null) {
@@ -312,7 +314,6 @@ class HtmlHelper extends AppHelper {
  * @param array $options Array of HTML attributes.
  * @param string $confirmMessage JavaScript confirmation message.
  * @return string An `<a />` element.
- * @access public
  * @link http://book.cakephp.org/view/1442/link
  */
 	public function link($title, $url = null, $options = array(), $confirmMessage = false) {
@@ -357,6 +358,20 @@ class HtmlHelper extends AppHelper {
 /**
  * Creates a link element for CSS stylesheets.
  *
+ * ### Usage
+ *
+ * Include one CSS file:
+ *
+ * `echo $this->Html->css('styles.css');`
+ *
+ * Include multiple CSS files:
+ *
+ * `echo $this->Html->css(array('one.css', 'two.css'));`
+ *
+ * Add the stylesheet to the `$scripts_for_layout` layout var:
+ *
+ * `$this->Html->css('styles.css', null, array('inline' => false));`
+ *
  * ### Options
  *
  * - `inline` If set to false, the generated tag appears in the head tag of the layout. Defaults to true
@@ -367,7 +382,6 @@ class HtmlHelper extends AppHelper {
  * @param string $rel Rel attribute. Defaults to "stylesheet". If equal to 'import' the stylesheet will be imported.
  * @param array $options Array of HTML attributes.
  * @return string CSS <link /> or <style /> tag, depending on the type of link.
- * @access public
  * @link http://book.cakephp.org/view/1437/css
  */
 	public function css($path, $rel = null, $options = array()) {
@@ -427,7 +441,20 @@ class HtmlHelper extends AppHelper {
  * If the filename is prefixed with "/", the path will be relative to the base path of your
  * application.  Otherwise, the path will be relative to your JavaScript path, usually webroot/js.
  *
- * Can include one or many Javascript files.
+ *
+ * ### Usage
+ *
+ * Include one script file:
+ *
+ * `echo $this->Html->script('styles.js');`
+ *
+ * Include multiple script files:
+ *
+ * `echo $this->Html->script(array('one.js', 'two.js'));`
+ *
+ * Add the script file to the `$scripts_for_layout` layout var:
+ *
+ * `$this->Html->script('styles.js', null, array('inline' => false));`
  *
  * ### Options
  *
@@ -439,7 +466,6 @@ class HtmlHelper extends AppHelper {
  * @param mixed $options Array of options, and html attributes see above. If boolean sets $options['inline'] = value
  * @return mixed String of `<script />` tags or null if $inline is false or if $once is true and the file has been
  *   included before.
- * @access public
  * @link http://book.cakephp.org/view/1589/script
  */
 	public function script($url, $options = array()) {
@@ -458,10 +484,10 @@ class HtmlHelper extends AppHelper {
 			}
 			return null;
 		}
-		if ($options['once'] && isset($this->__includedScripts[$url])) {
+		if ($options['once'] && isset($this->_includedScripts[$url])) {
 			return null;
 		}
-		$this->__includedScripts[$url] = true;
+		$this->_includedScripts[$url] = true;
 
 		if (strpos($url, '://') === false) {
 			if ($url[0] !== '/') {
@@ -497,7 +523,6 @@ class HtmlHelper extends AppHelper {
  * @param string $script The script to wrap
  * @param array $options The options to use.
  * @return mixed string or null depending on the value of `$options['inline']`
- * @access public
  * @link http://book.cakephp.org/view/1604/scriptBlock
  */
 	public function scriptBlock($script, $options = array()) {
@@ -528,7 +553,6 @@ class HtmlHelper extends AppHelper {
  *
  * @param array $options Options for the code block.
  * @return void
- * @access public
  * @link http://book.cakephp.org/view/1605/scriptStart
  */
 	public function scriptStart($options = array()) {
@@ -544,7 +568,6 @@ class HtmlHelper extends AppHelper {
  * used when the scriptBlock was started
  *
  * @return mixed depending on the settings of scriptStart() either a script tag or null
- * @access public
  * @link http://book.cakephp.org/view/1606/scriptEnd
  */
 	public function scriptEnd() {
@@ -569,7 +592,6 @@ class HtmlHelper extends AppHelper {
  * @param array $data Style data array, keys will be used as property names, values as property values.
  * @param boolean $oneline Whether or not the style block should be displayed on one line.
  * @return string CSS styling data
- * @access public
  * @link http://book.cakephp.org/view/1440/style
  */
 	public function style($data, $oneline = true) {
@@ -622,7 +644,6 @@ class HtmlHelper extends AppHelper {
  *
  * @param array $options Array of html attributes to apply to the generated list elements.
  * @return string breadcrumbs html list
- * @access public
  */
 	public function getCrumbList($options = array()) {
 		if (!empty($this->_crumbs)) {
@@ -667,7 +688,6 @@ class HtmlHelper extends AppHelper {
  * @param string $path Path to the image file, relative to the app/webroot/img/ directory.
  * @param array $options Array of HTML attributes.
  * @return string completed img tag
- * @access public
  * @link http://book.cakephp.org/view/1441/image
  */
 	public function image($path, $options = array()) {
@@ -705,7 +725,6 @@ class HtmlHelper extends AppHelper {
  * @param array $trOptions HTML options for TR elements.
  * @param array $thOptions HTML options for TH elements.
  * @return string Completed table headers
- * @access public
  * @link http://book.cakephp.org/view/1446/tableHeaders
  */
 	public function tableHeaders($names, $trOptions = null, $thOptions = null) {
@@ -722,11 +741,10 @@ class HtmlHelper extends AppHelper {
  * @param array $data Array of table data
  * @param array $oddTrOptions HTML options for odd TR elements if true useCount is used
  * @param array $evenTrOptions HTML options for even TR elements
- * @param bool $useCount adds class "column-$i"
- * @param bool $continueOddEven If false, will use a non-static $count variable,
+ * @param boolean $useCount adds class "column-$i"
+ * @param boolean $continueOddEven If false, will use a non-static $count variable,
  *    so that the odd/even count is reset to zero just for that call.
  * @return string Formatted HTML
- * @access public
  * @link http://book.cakephp.org/view/1447/tableCells
  */
 	public function tableCells($data, $oddTrOptions = null, $evenTrOptions = null, $useCount = false, $continueOddEven = true) {
@@ -783,7 +801,6 @@ class HtmlHelper extends AppHelper {
  *   If null, only a start tag will be printed
  * @param array $options Additional HTML attributes of the DIV tag, see above.
  * @return string The formatted tag element
- * @access public
  * @link http://book.cakephp.org/view/1443/tag
  */
 	public function tag($name, $text = null, $options = array()) {
@@ -834,7 +851,6 @@ class HtmlHelper extends AppHelper {
  *   If null, only a start tag will be printed
  * @param array $options Additional HTML attributes of the DIV tag
  * @return string The formatted DIV element
- * @access public
  * @link http://book.cakephp.org/view/1444/div
  */
 	public function div($class = null, $text = null, $options = array()) {
@@ -855,7 +871,6 @@ class HtmlHelper extends AppHelper {
  * @param string $text String content that will appear inside the p element.
  * @param array $options Additional HTML attributes of the P tag
  * @return string The formatted P element
- * @access public
  * @link http://book.cakephp.org/view/1445/para
  */
 	public function para($class, $text, $options = array()) {
@@ -887,7 +902,7 @@ class HtmlHelper extends AppHelper {
 			$tag = $options;
 			$options = array();
 		}
-		$items = $this->__nestedListItem($list, $options, $itemOptions, $tag);
+		$items = $this->_nestedListItem($list, $options, $itemOptions, $tag);
 		return sprintf($this->_tags[$tag], $this->_parseAttributes($options, null, ' ', ''), $items);
 	}
 
@@ -899,10 +914,9 @@ class HtmlHelper extends AppHelper {
  * @param array $itemOptions Additional HTML attributes of the list item (LI) tag
  * @param string $tag Type of list tag to use (ol/ul)
  * @return string The nested list element
- * @access private
  * @see HtmlHelper::nestedList()
  */
-	function __nestedListItem($items, $options, $itemOptions, $tag) {
+	protected function _nestedListItem($items, $options, $itemOptions, $tag) {
 		$out = '';
 
 		$index = 1;
@@ -922,11 +936,44 @@ class HtmlHelper extends AppHelper {
 	}
 
 /**
- * Load Html configs
+ * Load Html tag configuration.
+ *
+ * Loads a file from APP/Config that contains tag data.  By default the file is expected
+ * to be compatible with PhpReader:
+ *
+ * `$this->Html->loadConfig('tags.php');`
+ *
+ * tags.php could look like:
+ *
+ * {{{
+ * $tags = array(
+ *		'meta' => '<meta %s>'
+ * );
+ * }}}
+ *
+ * If you wish to store tag definitions in another format you can give an array
+ * containing the file name, and reader class name:
+ *
+ * `$this->Html->loadConfig(array('tags.ini', 'ini'));`
+ *
+ * Its expected that the `tags` index will exist from any configuration file that is read.
+ * You can also specify the path to read the configuration file from, if APP/Config is not
+ * where the file is.
+ *
+ * `$this->Html->loadConfig('tags.php', APP . 'Lib' . DS);`
+ *
+ * Configuration files can define the following sections:
+ *
+ * - `tags` The tags to replace.
+ * - `minimizedAttributes` The attributes that are represented like `disabled="disabled"`
+ * - `docTypes` Additional doctypes to use.
+ * - `attributeFormat` Format for long attributes e.g. `'%s="%s"'`
+ * - `minimizedAttributeFormat` Format for minimized attributes e.g. `'%s="%s"'`
  *
  * @param mixed $configFile String with the config file (load using PhpReader) or an array with file and reader name
  * @param string $path Path with config file
  * @return mixed False to error or loaded configs
+ * @throws ConfigureException
  */
 	public function loadConfig($configFile, $path = null) {
 		if (!$path) {
@@ -961,7 +1008,7 @@ class HtmlHelper extends AppHelper {
 			$this->_minimizedAttributes = array_merge($this->_minimizedAttributes, $configs['minimizedAttributes']);
 		}
 		if (isset($configs['docTypes']) && is_array($configs['docTypes'])) {
-			$this->__docTypes = array_merge($this->__docTypes, $configs['docTypes']);
+			$this->_docTypes = array_merge($this->_docTypes, $configs['docTypes']);
 		}
 		if (isset($configs['attributeFormat'])) {
 			$this->_attributeFormat = $configs['attributeFormat'];
@@ -1040,6 +1087,7 @@ class HtmlHelper extends AppHelper {
  *
  * @param string $key The name of the attribute to create
  * @param string $value The value of the attribute to create.
+ * @param boolean $escape Define if the value must be escaped
  * @return string The composed attribute.
  */
 	protected function _formatAttribute($key, $value, $escape = true) {
